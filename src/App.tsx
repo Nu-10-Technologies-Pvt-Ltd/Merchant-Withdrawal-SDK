@@ -3,8 +3,10 @@ import Approval from "./pages/Approval/Approval";
 
 import CryptoTnx from "./pages/CryptoTnx/CryptoTnx";
 
+import "./global.css"
 import Login from "./pages/login/login";
 import TwoFa from "./pages/twofa/TwoFa";
+
 
 function App() {
   return (
