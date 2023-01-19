@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import CryptoTnx from "./pages/CryptoTnx/CryptoTnx";
+import "./global.css"
 function App() {
   return (
     <BrowserRouter>
