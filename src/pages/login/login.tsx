@@ -93,14 +93,14 @@ const Login = (): JSX.Element => {
               mb: 2,
             }}
           >
-            LOGIN TO SUPER CASHIER DASHBOARD
+            LOGIN TO WITHDRAWAL SDK
           </Typography>
 
           <form onSubmit={handleSubmit}>
             <Stack
               direction="column"
               spacing={2}
-              sx={{ width: "50%", margin: "0 auto" }}
+              sx={{ width: "100%", margin: "0 auto" }}
             >
               <Stack spacing={2}>
                 <Typography variant="body2">Username </Typography>
