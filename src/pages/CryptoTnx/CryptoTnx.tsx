@@ -30,7 +30,6 @@ const CryptoTnx = () => {
     const navigate = useNavigate()
     const [open, setOpen] = React.useState(false);
     const [message, setMessage] = React.useState("");
-    const [FileUploaded, setFileUploaded] = useState([])
     // functions declarations ------------
     const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -206,21 +205,18 @@ const CryptoTnx = () => {
                         </TableContainer>
                     </Grid>
                     <Grid item xs={12} lg={12} mt={3}>
-                        <Stack direction='row' sx={{
-                            width: "500px"
-                        }} spacing={2}>
+                        <Stack direction='row' spacing={2}>
                             <div>
                                 <Button variant='contained' onClick={() => insetTransaction()}>Add <AddIcon /></Button>
                             </div>
                             <div>
                                 <Button variant='contained' >
-                                    <label className='' htmlFor="excel">upload</label>
+                                    <label className='' htmlFor="excel">upload </label>
                                 </Button>
                             </div>
                             <div>
                                 <Button variant='contained' onClick={() => {
                                     if (allCryptoTnxData.length > 1) {
-
                                         navigate("/crypto-transaction-history", { state: allCryptoTnxData })
                                     } else {
                                         setMessage("Please Add at least one entry ")
@@ -230,6 +226,14 @@ const CryptoTnx = () => {
                                 } >
                                     Submit Details
                                 </Button>
+                            </div>
+                            <div>
+                                <Button variant='contained' color='success'>
+                                    <a style={{ color: "#fff" }} href='https://res.cloudinary.com/dlvgerrwj/raw/upload/v1674139804/dummy-transaction_feeviz.xlsx' >
+                                        Download Dummy Excel file
+                                    </a>
+                                </Button>
+
                             </div>
                         </Stack>
                         <input type="file" style={{
