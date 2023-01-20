@@ -65,7 +65,7 @@ const CryptoTnx = () => {
     // }
 
     const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') {
+        if (reason === "clickaway") {
             return;
         }
         setOpen(false);
@@ -217,7 +217,7 @@ const CryptoTnx = () => {
                             <div>
                                 <Button variant='contained' onClick={() => {
                                     if (allCryptoTnxData.length > 1) {
-                                        navigate("/crypto-transaction-history", { state: allCryptoTnxData })
+                                        navigate("/approval", { state: allCryptoTnxData })
                                     } else {
                                         setMessage("Please Add at least one entry ")
                                         setOpen(true)
@@ -249,6 +249,5 @@ const CryptoTnx = () => {
         </Container >
     )
 }
-
 
 export default CryptoTnx
