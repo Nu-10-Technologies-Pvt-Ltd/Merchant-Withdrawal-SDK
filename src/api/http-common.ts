@@ -1,9 +1,8 @@
 import axios from "axios";
-import config from "../setupconfig.json"
 
-const http = axios.create({
-  baseURL: config.api_url,
-  headers: config.headers,
+export default axios.create({
+  baseURL: "http://10.0.21.149:5002",
+  headers: {
+    // "Content-type": "application/json",
+  },
 });
-
-export default http
