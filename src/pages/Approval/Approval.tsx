@@ -45,7 +45,7 @@ function Approval() {
   };
   return (
     <Box>
-      <ResponsiveAppBar />
+      <ResponsiveAppBar page="Approval" />
       <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
         <Table
           sx={{

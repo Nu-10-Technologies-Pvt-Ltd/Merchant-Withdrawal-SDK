@@ -140,7 +140,7 @@ const CryptoTnx = () => {
   );
   return (
     <>
-      <ResponsiveAppBar />
+      <ResponsiveAppBar page="Crypto Transaction" />
       <Container sx={{ mt: 5 }}>
         <Stack
           direction={"column"}

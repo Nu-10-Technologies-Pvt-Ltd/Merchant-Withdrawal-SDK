@@ -285,7 +285,7 @@ const CryptoTnxHistory = () => {
   }
   return (
     <>
-      <ResponsiveAppBar />
+      <ResponsiveAppBar page="Crypto Transaction History" />
       <MainTable />
     </>
   );
