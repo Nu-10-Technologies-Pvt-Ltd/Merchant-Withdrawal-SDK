@@ -18,9 +18,9 @@ import ResponsiveAppBar from "../../components/appbar";
 
 function Approval() {
   const { state } = useLocation();
-
+  // console.log(state, "state in approval");
   useEffect(() => {
-    setAllCryptoTnxData(state);
+    setAllCryptoTnxData(state.slice(1));
   }, [state]);
   const [allCryptoTnxData, setAllCryptoTnxData] = useState([]);
   const [approved, setApproved] = useState(
