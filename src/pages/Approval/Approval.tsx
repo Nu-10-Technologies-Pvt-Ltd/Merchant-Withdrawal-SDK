@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import { useLocation } from "react-router-dom";
+import ResponsiveAppBar from "../../components/appbar";
 
 function Approval() {
   const { state } = useLocation();
@@ -44,6 +45,7 @@ function Approval() {
   };
   return (
     <Box>
+      <ResponsiveAppBar />
       <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
         <Table
           sx={{
