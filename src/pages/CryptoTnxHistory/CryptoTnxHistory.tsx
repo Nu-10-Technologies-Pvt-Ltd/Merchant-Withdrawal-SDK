@@ -142,7 +142,7 @@ const CryptoTnxHistory = () => {
           </TableHead>
           <TableBody>
             {data != null
-              ? data.data.slice(2).map((row: any, cryptoIndex) => (
+              ? data.data.map((row: any, cryptoIndex) => (
                   <TableRow
                     key={row.batchID}
                     sx={{

@@ -1,4 +1,4 @@
-import React, { useState, ChangeEventHandler } from "react";
+import React, { useState, ChangeEventHandler, useEffect } from "react";
 import {
   Container,
   Paper,
@@ -74,8 +74,7 @@ const CryptoTnx = () => {
         flat_coin: "",
         amount: 0,
       });
-      alert("check 1");
-      console.log(allCryptoTnxData);
+      console.log(allCryptoTnxData, "inside ");
     }
   };
 
@@ -84,9 +83,10 @@ const CryptoTnx = () => {
   //         state: allCryptoTnxData
   //     })
   // }
+  useEffect(() => {}, [allCryptoTnxData]);
   const handleSubmit = async () => {
-    await insertTransaction();
-    if (allCryptoTnxData.length > 0) {
+    // await insertTransaction();
+    if (allCryptoTnxData.length > 1) {
       navigate("/approval", { state: allCryptoTnxData });
     } else {
       setMessage("Please Add at least one entry ");
