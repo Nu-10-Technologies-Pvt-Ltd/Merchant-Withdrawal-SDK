@@ -48,7 +48,7 @@ const Login = (): JSX.Element => {
     });
     if (Result.status === "success") {
       console.log(Result.data);
-      navigate("/admin");
+      navigate("/crypto_transaction");
       //   } else if (Result.status === "unauthorized") {
       //     toast.error(`Session Expired, You will be redireted to the Login page.`, {
       //       theme: "colored",
