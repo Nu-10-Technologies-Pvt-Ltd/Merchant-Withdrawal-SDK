@@ -12,6 +12,8 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import NutenLogo from "../assets/NutenLogo";
+import { Stack } from "@mui/material";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -41,27 +43,38 @@ function ResponsiveAppBar(props: any) {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: "#FFF" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            {page}
-          </Typography>
+          {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
+          <Stack spacing={1} direction="row">
+            <NutenLogo />
+            <Typography
+              // variant="h6"
+              noWrap
+              component="a"
+              // href="/"
+              sx={{
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+                // fontFamily: "monospace",
+                // fontWeight: 700,
+                // letterSpacing: ".3rem",
+                // color: "inherit",
+                // textDecoration: "none",
+                fontFamily: "'Inter'",
+                fontStyle: "normal",
+                fontWeight: "600",
+                fontSize: "24.6159px",
+                lineHeight: "134.2%",
+                // display: "flex",
+                alignItems: "center",
+                color: "#21146B",
+              }}
+            >
+              NivaPay
+            </Typography>
+          </Stack>
 
           {/* <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -100,6 +113,7 @@ function ResponsiveAppBar(props: any) {
             </Menu>
           </Box> */}
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          {/* <NutenLogo /> */}
           <Typography
             variant="h5"
             noWrap

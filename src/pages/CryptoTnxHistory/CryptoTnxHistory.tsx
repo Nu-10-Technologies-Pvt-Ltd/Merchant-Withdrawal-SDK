@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Box,
   Button,
   Container,
   Paper,
@@ -93,18 +94,23 @@ const CryptoTnxHistory = () => {
   }, []);
 
   function MainTable() {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState("");
 
-    const handleClickOpen = () => {
-      setOpen(true);
+    const handleClickOpen = (batchID: number) => {
+      setOpen("dialog" + batchID);
     };
     const handleClose = () => {
-      setOpen(false);
+      setOpen("");
     };
     return (
       <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
         <Table
           sx={{
+            // "&.MuiTable-root": {
+            //   paddingLeft: "16px",
+            //   paddingRight: "16px",
+            //   borderCollapse: "separate",
+            // },
             minWidth: 650,
             borderSpacing: "0 1.5em",
             borderCollapse: "separate",
@@ -162,7 +168,7 @@ const CryptoTnxHistory = () => {
                     </TableCell>
                     <TableCell align="justify">{row.createdAt}</TableCell>
                     <TableCell align="justify">{row.uuid}</TableCell>
-                    <TableCell align="justify">{row.status}</TableCell>
+                    <TableCell align="justify">true</TableCell>
                     <TableCell align="justify">
                       {row.transaction
                         .map((item: any) => item.amount)
@@ -172,17 +178,21 @@ const CryptoTnxHistory = () => {
                     <TableCell align="justify">
                       <Stack spacing={1} direction={"row"}>
                         <Button
+                          key={"button" + row.batchID}
                           variant="contained"
                           color="primary"
-                          style={{ color: "#FFF", borderColor: "#1E2959" }}
-                          onClick={handleClickOpen}
+                          style={{ color: "#FFF", backgroundColor: "#1E2959" }}
+                          onClick={() => handleClickOpen(row.batchID)}
                         >
                           View Details
                         </Button>
                         <BootstrapDialog
+                          key={"dialog" + row.batchID}
                           onClose={handleClose}
                           aria-labelledby="customized-dialog-title"
-                          open={open}
+                          open={open === "dialog" + row.batchID}
+                          fullWidth={true}
+                          maxWidth={"lg"}
                         >
                           <BootstrapDialogTitle
                             id="customized-dialog-title"
@@ -191,7 +201,12 @@ const CryptoTnxHistory = () => {
                             Batch Details
                           </BootstrapDialogTitle>
                           <DialogContent dividers>
-                            <SecondTable data={row.transaction} />
+                            {open && (
+                              <SecondTable
+                                key={"second-table" + row.batchID}
+                                data={row.transaction}
+                              />
+                            )}
                           </DialogContent>
                           <DialogActions>
                             <Button autoFocus onClick={handleClose}>
@@ -211,6 +226,7 @@ const CryptoTnxHistory = () => {
   }
   function SecondTable(props: any) {
     const { data } = props;
+    console.log(data, "inside second table");
     return (
       <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
         <Table
@@ -254,7 +270,7 @@ const CryptoTnxHistory = () => {
             {data.length > 0
               ? data.map((row: any) => (
                   <TableRow
-                    key={row.foreignID}
+                    key={row.uuid}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                       background: "#FFFFFF",
@@ -284,10 +300,12 @@ const CryptoTnxHistory = () => {
     );
   }
   return (
-    <>
+    <Box sx={{ backgroundColor: "#f9fafe" }}>
       <ResponsiveAppBar page="Crypto Transaction History" />
-      <MainTable />
-    </>
+      <Box pl={4} pr={4} sx={{ backgroundColor: "#f9fafe" }}>
+        <MainTable />
+      </Box>
+    </Box>
   );
 };
 

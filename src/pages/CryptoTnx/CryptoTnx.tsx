@@ -43,14 +43,19 @@ const CryptoTnx = () => {
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = React.useState("");
   // functions declarations ------------
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
+  const handleInputChange = (e: any) => {
     const { name, value } = e.target;
-    setCryptoTnxData((preValue) => ({
-      ...preValue,
-      [name]: value,
-    }));
+    if (name !== "amount") {
+      setCryptoTnxData({
+        ...cryptoTnxData,
+        [name]: value,
+      });
+    } else {
+      setCryptoTnxData({
+        ...cryptoTnxData,
+        [name]: e.target.valueAsNumber,
+      });
+    }
   };
   const insertTransaction = async () => {
     console.log("function is calling...");
@@ -83,9 +88,11 @@ const CryptoTnx = () => {
   //         state: allCryptoTnxData
   //     })
   // }
-  useEffect(() => {}, [allCryptoTnxData]);
+  useEffect(() => {
+    console.log(cryptoTnxData);
+  }, [cryptoTnxData]);
   const handleSubmit = async () => {
-    // await insertTransaction();
+    await insertTransaction();
     if (allCryptoTnxData.length > 1) {
       navigate("/approval", { state: allCryptoTnxData });
     } else {
@@ -139,7 +146,7 @@ const CryptoTnx = () => {
     </React.Fragment>
   );
   return (
-    <>
+    <div style={{ backgroundColor: "#f9fafe" }}>
       <ResponsiveAppBar page="Crypto Transaction" />
       <Container sx={{ mt: 5 }}>
         <Stack
@@ -153,36 +160,75 @@ const CryptoTnx = () => {
             message={message}
             action={action}
           />
-
-          <Grid item xs={12} lg={12} mt={3}>
-            <Button
-              variant="contained"
-              onClick={() => {
-                navigate("/crypto-txn-history");
-              }}
-            >
-              Transaction History
-            </Button>
+          <Grid container>
+            <Grid item xs={12} lg={12} mt={3}>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  navigate("/crypto-txn-history");
+                }}
+                sx={{
+                  color: "#FFF",
+                  backgroundColor: "#1E2959",
+                  ml: "auto",
+                  display: "block",
+                }}
+              >
+                Txn History
+              </Button>
+            </Grid>
           </Grid>
           <Grid container>
             <Grid item xs={12}>
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
+                <Table
+                  sx={{
+                    minWidth: 650,
+                    borderSpacing: "0 1.5em",
+                    borderCollapse: "separate",
+                    backgroundColor: "#f9fafe",
+                  }}
+                  aria-label="simple table"
+                >
                   <TableHead>
                     <TableRow>
-                      <TableCell>User address</TableCell>
-                      <TableCell align="left">Foreign ID</TableCell>
-                      <TableCell align="left">Flat Coin</TableCell>
-                      <TableCell align="left">Crypto Coin</TableCell>
-                      <TableCell align="left">Amount</TableCell>
+                      {[
+                        "User address",
+                        "Foreign ID",
+                        "Fiat Coin",
+                        "Crypto Coin",
+                        "Amount",
+                      ].map((item): any => (
+                        <TableCell
+                          align="justify"
+                          key={item}
+                          sx={{
+                            fontWeight: "600",
+
+                            lineHeight: "150%",
+                            letterSpacing: "0.04em",
+                            textTransform: "uppercase",
+                            color: "#C4C4C4",
+                            borderBottom: "none",
+                            // backgroundColor: "#f9fafe",
+                          }}
+                        >
+                          {item}
+                        </TableCell>
+                      ))}
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {allCryptoTnxData
                       .map((item) => (
                         <TableRow
+                          key={item.foreignID}
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
+                            background: "#FFFFFF",
+                            boxShadow: "0px 4px 4px rgba(210, 207, 227, 0.25)",
+                            borderRadius: "7px",
+                            // marginBottom: "2px",
                           }}
                         >
                           <TableCell component="th" scope="row">
@@ -222,10 +268,10 @@ const CryptoTnx = () => {
                           <TableCell align="right">
                             <TextField
                               disabled={true}
-                              sx={{
-                                border: "1px solid #C3C3C3",
-                                borderRadius: "6px",
-                              }}
+                              // sx={{
+                              //   border: "1px solid #C3C3C3",
+                              //   borderRadius: "6px",
+                              // }}
                               size="small"
                               type="text"
                               name="crypto_coin"
@@ -364,24 +410,39 @@ const CryptoTnx = () => {
             <Grid item xs={12} lg={12} mt={3}>
               <Stack direction="row" spacing={2}>
                 <div>
-                  <Button variant="contained" onClick={insertTransaction}>
+                  <Button
+                    variant="contained"
+                    onClick={insertTransaction}
+                    style={{ color: "#FFF", backgroundColor: "#1E2959" }}
+                  >
                     Add <AddIcon />
                   </Button>
                 </div>
                 <div>
-                  <Button variant="contained">
+                  <Button
+                    variant="contained"
+                    style={{ color: "#FFF", backgroundColor: "#1E2959" }}
+                  >
                     <label className="" htmlFor="excel">
                       upload{" "}
                     </label>
                   </Button>
                 </div>
                 <div>
-                  <Button variant="contained" onClick={handleSubmit}>
+                  <Button
+                    variant="contained"
+                    onClick={handleSubmit}
+                    style={{ color: "#FFF", backgroundColor: "#1E2959" }}
+                  >
                     Submit Details
                   </Button>
                 </div>
                 <div>
-                  <Button variant="contained" color="success">
+                  <Button
+                    variant="contained"
+                    color="success"
+                    style={{ color: "#FFF", backgroundColor: "#1E2959" }}
+                  >
                     <a
                       style={{ color: "#fff" }}
                       href="https://res.cloudinary.com/dlvgerrwj/raw/upload/v1674139804/dummy-transaction_feeviz.xlsx"
@@ -407,7 +468,7 @@ const CryptoTnx = () => {
           </Grid>
         </Stack>
       </Container>
-    </>
+    </div>
   );
 };
 
