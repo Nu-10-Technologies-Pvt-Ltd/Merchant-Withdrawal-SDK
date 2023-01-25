@@ -135,8 +135,7 @@ function Approval() {
                     align="justify"
                     key={item}
                     sx={{
-                      fontWeight: "600",
-
+                      fontWeight: "500",
                       lineHeight: "150%",
                       letterSpacing: "0.04em",
                       textTransform: "uppercase",
@@ -167,13 +166,59 @@ function Approval() {
                         component="th"
                         scope="row"
                         // sx={{ display: "flex", alignItems: "center" }}
+                        sx={{
+                          fontWeight: "500",
+                          fontSize: "13px",
+                          lineHeight: "180.5%",
+                          color: "#201B3F",
+                        }}
                       >
                         {row.user_address}
                       </TableCell>
-                      <TableCell align="justify">{row.foreignID}</TableCell>
-                      <TableCell align="justify">{row.crypto_coin}</TableCell>
-                      <TableCell align="justify">{row.flat_coin}</TableCell>
-                      <TableCell align="justify">{row.amount}</TableCell>
+                      <TableCell
+                        align="justify"
+                        sx={{
+                          fontWeight: "500",
+                          fontSize: "13px",
+                          lineHeight: "180.5%",
+                          color: "#201B3F",
+                        }}
+                      >
+                        {row.foreignID}
+                      </TableCell>
+                      <TableCell
+                        align="justify"
+                        sx={{
+                          fontWeight: "500",
+                          fontSize: "13px",
+                          lineHeight: "180.5%",
+                          color: "#201B3F",
+                        }}
+                      >
+                        {row.crypto_coin}
+                      </TableCell>
+                      <TableCell
+                        align="justify"
+                        sx={{
+                          fontWeight: "500",
+                          fontSize: "13px",
+                          lineHeight: "180.5%",
+                          color: "#201B3F",
+                        }}
+                      >
+                        {row.flat_coin}
+                      </TableCell>
+                      <TableCell
+                        align="justify"
+                        sx={{
+                          fontWeight: "500",
+                          fontSize: "13px",
+                          lineHeight: "180.5%",
+                          color: "#201B3F",
+                        }}
+                      >
+                        {row.amount}
+                      </TableCell>
                       <TableCell align="justify">
                         <Stack
                           spacing={1}

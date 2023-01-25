@@ -131,7 +131,7 @@ const CryptoTnxHistory = () => {
                   align="justify"
                   key={item}
                   sx={{
-                    fontWeight: "600",
+                    fontWeight: "500",
 
                     lineHeight: "150%",
                     letterSpacing: "0.04em",
@@ -162,14 +162,57 @@ const CryptoTnxHistory = () => {
                     <TableCell
                       component="th"
                       scope="row"
-                      // sx={{ display: "flex", alignItems: "center" }}
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
                     >
                       {row.batchID}
                     </TableCell>
-                    <TableCell align="justify">{row.createdAt}</TableCell>
-                    <TableCell align="justify">{row.uuid}</TableCell>
-                    <TableCell align="justify">true</TableCell>
-                    <TableCell align="justify">
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    >
+                      {row.createdAt}
+                    </TableCell>
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    >
+                      {row.uuid}
+                    </TableCell>
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    >
+                      true
+                    </TableCell>
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    >
                       {row.transaction
                         .map((item: any) => item.amount)
                         .reduce((prev: any, next: any) => prev + next)}
@@ -251,7 +294,7 @@ const CryptoTnxHistory = () => {
                   align="justify"
                   key={item}
                   sx={{
-                    fontWeight: "600",
+                    fontWeight: "500",
 
                     lineHeight: "150%",
                     letterSpacing: "0.04em",
@@ -282,15 +325,68 @@ const CryptoTnxHistory = () => {
                     <TableCell
                       component="th"
                       scope="row"
-                      // sx={{ display: "flex", alignItems: "center" }}
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
                     >
                       {row.user_address}
                     </TableCell>
-                    <TableCell align="justify">{row.foreignID}</TableCell>
-                    <TableCell align="justify">{row.crypto_coin}</TableCell>
-                    <TableCell align="justify">{row.flat_coin}</TableCell>
-                    <TableCell align="justify">{row.amount}</TableCell>
-                    <TableCell align="justify"></TableCell>
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    >
+                      {row.foreignID}
+                    </TableCell>
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    >
+                      {row.crypto_coin}
+                    </TableCell>
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    >
+                      {row.flat_coin}
+                    </TableCell>
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    >
+                      {row.amount}
+                    </TableCell>
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    ></TableCell>
                   </TableRow>
                 ))
               : "No Data"}

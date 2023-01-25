@@ -1,5 +1,6 @@
 import React, { useState, ChangeEventHandler, useEffect } from "react";
 import {
+  Box,
   Container,
   Paper,
   Table,
@@ -127,7 +128,8 @@ const CryptoTnx = () => {
       };
     });
     promise.then((d: any) => {
-      setAllCryptoTnxData(d);
+      console.log(d, "excel");
+      setAllCryptoTnxData([...allCryptoTnxData, ...d]);
     });
   };
   const action = (
@@ -148,7 +150,7 @@ const CryptoTnx = () => {
   return (
     <div style={{ backgroundColor: "#f9fafe" }}>
       <ResponsiveAppBar page="Crypto Transaction" />
-      <Container sx={{ mt: 5 }}>
+      <Box sx={{ mt: 1, mx: 5 }}>
         <Stack
           direction={"column"}
           sx={{ alignItems: "center", minHeight: "70vh" }}
@@ -203,7 +205,7 @@ const CryptoTnx = () => {
                           align="justify"
                           key={item}
                           sx={{
-                            fontWeight: "600",
+                            fontWeight: "500",
 
                             lineHeight: "150%",
                             letterSpacing: "0.04em",
@@ -231,90 +233,61 @@ const CryptoTnx = () => {
                             // marginBottom: "2px",
                           }}
                         >
-                          <TableCell component="th" scope="row">
-                            <TextField
-                              disabled={true}
-                              sx={{
-                                border: "1px solid #C3C3C3",
-                                borderRadius: "6px",
-                              }}
-                              size="small"
-                              type="text"
-                              name="user_address"
-                              onChange={(e) => handleInputChange(e)}
-                              value={item.user_address}
-                              fullWidth
-                              placeholder="User address"
-                              variant="outlined"
-                            />
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            sx={{
+                              fontWeight: "500",
+                              fontSize: "13px",
+                              lineHeight: "180.5%",
+                              color: "#201B3F",
+                            }}
+                          >
+                            {item.user_address}
                           </TableCell>
-                          <TableCell align="right">
-                            <TextField
-                              disabled={true}
-                              sx={{
-                                border: "1px solid #C3C3C3",
-                                borderRadius: "6px",
-                              }}
-                              size="small"
-                              type="text"
-                              name="foreignID"
-                              onChange={(e) => handleInputChange(e)}
-                              value={item.foreignID}
-                              fullWidth
-                              placeholder="Foreign ID"
-                              variant="outlined"
-                            />
+                          <TableCell
+                            align="justify"
+                            sx={{
+                              fontWeight: "500",
+                              fontSize: "13px",
+                              lineHeight: "180.5%",
+                              color: "#201B3F",
+                            }}
+                          >
+                            {item.foreignID}
                           </TableCell>
-                          <TableCell align="right">
-                            <TextField
-                              disabled={true}
-                              // sx={{
-                              //   border: "1px solid #C3C3C3",
-                              //   borderRadius: "6px",
-                              // }}
-                              size="small"
-                              type="text"
-                              name="crypto_coin"
-                              onChange={(e) => handleInputChange(e)}
-                              value={item.crypto_coin}
-                              fullWidth
-                              placeholder="Crypto Coin"
-                              variant="outlined"
-                            />
+                          <TableCell
+                            align="justify"
+                            sx={{
+                              fontWeight: "500",
+                              fontSize: "13px",
+                              lineHeight: "180.5%",
+                              color: "#201B3F",
+                            }}
+                          >
+                            {item.crypto_coin}
                           </TableCell>
-                          <TableCell align="right">
-                            <TextField
-                              disabled={true}
-                              sx={{
-                                border: "1px solid #C3C3C3",
-                                borderRadius: "6px",
-                              }}
-                              size="small"
-                              type="text"
-                              name="flat_coin"
-                              onChange={(e) => handleInputChange(e)}
-                              value={item.flat_coin}
-                              fullWidth
-                              placeholder="Flat Coin"
-                              variant="outlined"
-                            />
+                          <TableCell
+                            align="justify"
+                            sx={{
+                              fontWeight: "500",
+                              fontSize: "13px",
+                              lineHeight: "180.5%",
+                              color: "#201B3F",
+                            }}
+                          >
+                            {item.flat_coin}
                           </TableCell>
-                          <TableCell align="right">
-                            <TextField
-                              disabled={true}
-                              sx={{
-                                border: "1px solid #C3C3C3",
-                                borderRadius: "6px",
-                              }}
-                              type="number"
-                              size="small"
-                              name="amount"
-                              onChange={(e) => handleInputChange(e)}
-                              value={item.amount}
-                              fullWidth
-                              placeholder="Amount"
-                              variant="outlined"
-                            />
+                          <TableCell
+                            align="justify"
+                            sx={{
+                              fontWeight: "500",
+                              fontSize: "13px",
+                              lineHeight: "180.5%",
+                              color: "#201B3F",
+                            }}
+                          >
+                            {item.amount}
                           </TableCell>
                         </TableRow>
                       ))
@@ -467,7 +440,7 @@ const CryptoTnx = () => {
             </Grid>
           </Grid>
         </Stack>
-      </Container>
+      </Box>
     </div>
   );
 };
