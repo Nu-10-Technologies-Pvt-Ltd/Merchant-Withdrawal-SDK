@@ -22,6 +22,7 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
+import Footer from "../../components/footer";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -398,9 +399,10 @@ const CryptoTnxHistory = () => {
   return (
     <Box sx={{ backgroundColor: "#f9fafe" }}>
       <ResponsiveAppBar page="Crypto Transaction History" />
-      <Box pl={4} pr={4} sx={{ backgroundColor: "#f9fafe" }}>
+      <Box pl={4} pr={4} pb={4.5} sx={{ backgroundColor: "#f9fafe" }}>
         <MainTable />
       </Box>
+      <Footer />
     </Box>
   );
 };

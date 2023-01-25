@@ -21,6 +21,7 @@ import Snackbar from "@mui/material/Snackbar";
 import * as XLSX from "xlsx";
 import { useNavigate } from "react-router-dom";
 import ResponsiveAppBar from "../../components/appbar";
+import Footer from "../../components/footer";
 const CryptoTnx = () => {
   // State declarations  -------------
   const [allCryptoTnxData, setAllCryptoTnxData] = useState([
@@ -148,9 +149,9 @@ const CryptoTnx = () => {
     </React.Fragment>
   );
   return (
-    <div style={{ backgroundColor: "#f9fafe" }}>
+    <Box sx={{ backgroundColor: "#f9fafe" }}>
       <ResponsiveAppBar page="Crypto Transaction" />
-      <Box sx={{ mt: 1, mx: 5 }}>
+      <Box sx={{ mt: 1, mx: 5, pb: 4.5 }}>
         <Stack
           direction={"column"}
           sx={{ alignItems: "center", minHeight: "70vh" }}
@@ -381,7 +382,19 @@ const CryptoTnx = () => {
               </TableContainer>
             </Grid>
             <Grid item xs={12} lg={12} mt={3}>
-              <Stack direction="row" spacing={2}>
+              <Stack
+                direction="row"
+                spacing={2}
+                // sx={{
+                //   backgroundColor: "#f9fafe",
+                //   borderTop: "2px solid red",
+                //   position: "fixed",
+                //   width: "100%",
+                //   bottom: "0",
+                //   color: "white",
+                //   fontSize: "25px",
+                // }}
+              >
                 <div>
                   <Button
                     variant="contained"
@@ -441,7 +454,8 @@ const CryptoTnx = () => {
           </Grid>
         </Stack>
       </Box>
-    </div>
+      <Footer />
+    </Box>
   );
 };
 

@@ -42,10 +42,10 @@ const Login = (): JSX.Element => {
 
   const navigate = useNavigate();
   const loginUser = async (): Promise<any> => {
-    const Result = await LoginUser({
-      username: userName,
-      password,
-    });
+    // const Result = await LoginUser({
+    //   username: userName,
+    //   password,
+    // });
     navigate("/crypto-transaction");
     // if (Result.status === "success") {
     //   console.log(Result.data);

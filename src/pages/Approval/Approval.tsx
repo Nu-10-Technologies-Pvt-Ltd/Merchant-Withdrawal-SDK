@@ -18,6 +18,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ResponsiveAppBar from "../../components/appbar";
 import sendCrypto from "./services";
 import SnackBar from "../../components/snackbar";
+import Footer from "../../components/footer";
 
 function Approval() {
   const [openSnack, setOpenSnack] = React.useState(false);
@@ -106,6 +107,7 @@ function Approval() {
         }}
         pl={4}
         pr={4}
+        pb={4.5}
       >
         <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
           <Table
@@ -321,6 +323,7 @@ function Approval() {
         setOpen={setOpenSnack}
         severity={severity}
       />
+      <Footer />
     </Box>
   );
 }
