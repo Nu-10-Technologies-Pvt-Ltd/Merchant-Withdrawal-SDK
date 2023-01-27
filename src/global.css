@@ -1,18 +1,25 @@
 body {
-    margin: 0;
-
+  margin: 0;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .uploadFile {
-    width: 100px;
-    height: 35px;
-    padding: 8px;
-    border-radius: 6px;
-    border: none;
-    color: #fff;
-    background-color: rgb(8, 185, 8);
+  width: 100px;
+  height: 35px;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  color: #fff;
+  background-color: rgb(8, 185, 8);
+}
+* {
+  font-family: "Inter" !important;
+  font-style: normal !important;
+}
+@font-face {
+  font-family: "Inter";
+  src: url(./assets/fonts/inter/Inter-Regular.ttf);
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Box,
   Button,
   Container,
   Paper,
@@ -21,6 +22,7 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
+import Footer from "../../components/footer";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -93,18 +95,23 @@ const CryptoTnxHistory = () => {
   }, []);
 
   function MainTable() {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState("");
 
-    const handleClickOpen = () => {
-      setOpen(true);
+    const handleClickOpen = (batchID: number) => {
+      setOpen("dialog" + batchID);
     };
     const handleClose = () => {
-      setOpen(false);
+      setOpen("");
     };
     return (
       <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
         <Table
           sx={{
+            // "&.MuiTable-root": {
+            //   paddingLeft: "16px",
+            //   paddingRight: "16px",
+            //   borderCollapse: "separate",
+            // },
             minWidth: 650,
             borderSpacing: "0 1.5em",
             borderCollapse: "separate",
@@ -125,7 +132,7 @@ const CryptoTnxHistory = () => {
                   align="justify"
                   key={item}
                   sx={{
-                    fontWeight: "600",
+                    fontWeight: "500",
 
                     lineHeight: "150%",
                     letterSpacing: "0.04em",
@@ -156,14 +163,57 @@ const CryptoTnxHistory = () => {
                     <TableCell
                       component="th"
                       scope="row"
-                      // sx={{ display: "flex", alignItems: "center" }}
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
                     >
                       {row.batchID}
                     </TableCell>
-                    <TableCell align="justify">{row.createdAt}</TableCell>
-                    <TableCell align="justify">{row.uuid}</TableCell>
-                    <TableCell align="justify">{row.status}</TableCell>
-                    <TableCell align="justify">
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    >
+                      {row.createdAt}
+                    </TableCell>
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    >
+                      {row.uuid}
+                    </TableCell>
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    >
+                      true
+                    </TableCell>
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    >
                       {row.transaction
                         .map((item: any) => item.amount)
                         .reduce((prev: any, next: any) => prev + next)}
@@ -172,32 +222,49 @@ const CryptoTnxHistory = () => {
                     <TableCell align="justify">
                       <Stack spacing={1} direction={"row"}>
                         <Button
+                          key={"button" + row.batchID}
                           variant="contained"
                           color="primary"
-                          style={{ color: "#FFF", borderColor: "#1E2959" }}
-                          onClick={handleClickOpen}
+                          style={{ color: "#FFF", backgroundColor: "#1E2959" }}
+                          onClick={() => handleClickOpen(row.batchID)}
                         >
                           View Details
                         </Button>
                         <BootstrapDialog
+                          key={"dialog" + row.batchID}
                           onClose={handleClose}
                           aria-labelledby="customized-dialog-title"
-                          open={open}
+                          open={open === "dialog" + row.batchID}
+                          fullWidth={true}
+                          maxWidth={"lg"}
+                          sx={{
+                            ".MuiPaper-root": {
+                              mx: 3,
+                            },
+                          }}
                         >
-                          <BootstrapDialogTitle
+                          {/* <BootstrapDialogTitle
                             id="customized-dialog-title"
                             onClose={handleClose}
                           >
                             Batch Details
-                          </BootstrapDialogTitle>
-                          <DialogContent dividers>
-                            <SecondTable data={row.transaction} />
+                          </BootstrapDialogTitle> */}
+                          <DialogContent
+                            dividers
+                            sx={{ backgroundColor: "#f9fafe" }}
+                          >
+                            {open && (
+                              <SecondTable
+                                key={"second-table" + row.batchID}
+                                data={row.transaction}
+                              />
+                            )}
                           </DialogContent>
-                          <DialogActions>
+                          {/* <DialogActions>
                             <Button autoFocus onClick={handleClose}>
                               Return to Batch Table
                             </Button>
-                          </DialogActions>
+                          </DialogActions> */}
                         </BootstrapDialog>
                       </Stack>
                     </TableCell>
@@ -211,6 +278,7 @@ const CryptoTnxHistory = () => {
   }
   function SecondTable(props: any) {
     const { data } = props;
+    console.log(data, "inside second table");
     return (
       <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
         <Table
@@ -235,7 +303,7 @@ const CryptoTnxHistory = () => {
                   align="justify"
                   key={item}
                   sx={{
-                    fontWeight: "600",
+                    fontWeight: "500",
 
                     lineHeight: "150%",
                     letterSpacing: "0.04em",
@@ -254,7 +322,7 @@ const CryptoTnxHistory = () => {
             {data.length > 0
               ? data.map((row: any) => (
                   <TableRow
-                    key={row.foreignID}
+                    key={row.uuid}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                       background: "#FFFFFF",
@@ -266,15 +334,68 @@ const CryptoTnxHistory = () => {
                     <TableCell
                       component="th"
                       scope="row"
-                      // sx={{ display: "flex", alignItems: "center" }}
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
                     >
                       {row.user_address}
                     </TableCell>
-                    <TableCell align="justify">{row.foreignID}</TableCell>
-                    <TableCell align="justify">{row.crypto_coin}</TableCell>
-                    <TableCell align="justify">{row.flat_coin}</TableCell>
-                    <TableCell align="justify">{row.amount}</TableCell>
-                    <TableCell align="justify"></TableCell>
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    >
+                      {row.foreignID}
+                    </TableCell>
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    >
+                      {row.crypto_coin}
+                    </TableCell>
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    >
+                      {row.flat_coin}
+                    </TableCell>
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    >
+                      {row.amount}
+                    </TableCell>
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    ></TableCell>
                   </TableRow>
                 ))
               : "No Data"}
@@ -284,10 +405,13 @@ const CryptoTnxHistory = () => {
     );
   }
   return (
-    <>
+    <Box sx={{ backgroundColor: "#f9fafe" }}>
       <ResponsiveAppBar page="Crypto Transaction History" />
-      <MainTable />
-    </>
+      <Box pl={4} pr={4} pb={4.5} sx={{ backgroundColor: "#f9fafe" }}>
+        <MainTable />
+      </Box>
+      <Footer />
+    </Box>
   );
 };
 

@@ -42,30 +42,31 @@ const Login = (): JSX.Element => {
 
   const navigate = useNavigate();
   const loginUser = async (): Promise<any> => {
-    const Result = await LoginUser({
-      username: userName,
-      password,
-    });
-    if (Result.status === "success") {
-      console.log(Result.data);
-      navigate("/crypto_transaction");
-      //   } else if (Result.status === "unauthorized") {
-      //     toast.error(`Session Expired, You will be redireted to the Login page.`, {
-      //       theme: "colored",
-      //     });
-      //     setTimeout(() => {
-      //       removeToken();
-      //     }, 10000);
-    } else {
-      // toast.error(`Error! ${Result.errors[0]}.`, {
-      //   theme: "colored",
-      // });
-      //   }
-      // }
-      // alert(Result.errors);
-      setErrorMessage(Result.errors);
-      setOpen(true);
-    }
+    // const Result = await LoginUser({
+    //   username: userName,
+    //   password,
+    // });
+    navigate("/crypto-transaction");
+    // if (Result.status === "success") {
+    //   console.log(Result.data);
+    //   navigate("/crypto_transaction");
+    //   //   } else if (Result.status === "unauthorized") {
+    //   //     toast.error(`Session Expired, You will be redireted to the Login page.`, {
+    //   //       theme: "colored",
+    //   //     });
+    //   //     setTimeout(() => {
+    //   //       removeToken();
+    //   //     }, 10000);
+    // } else {
+    //   // toast.error(`Error! ${Result.errors[0]}.`, {
+    //   //   theme: "colored",
+    //   // });
+    //   //   }
+    //   // }
+    //   // alert(Result.errors);
+    //   setErrorMessage(Result.errors);
+    //   setOpen(true);
+    // }
   };
 
   return (
