@@ -237,14 +237,22 @@ const CryptoTnxHistory = () => {
                           open={open === "dialog" + row.batchID}
                           fullWidth={true}
                           maxWidth={"lg"}
+                          sx={{
+                            ".MuiPaper-root": {
+                              mx: 3,
+                            },
+                          }}
                         >
-                          <BootstrapDialogTitle
+                          {/* <BootstrapDialogTitle
                             id="customized-dialog-title"
                             onClose={handleClose}
                           >
                             Batch Details
-                          </BootstrapDialogTitle>
-                          <DialogContent dividers>
+                          </BootstrapDialogTitle> */}
+                          <DialogContent
+                            dividers
+                            sx={{ backgroundColor: "#f9fafe" }}
+                          >
                             {open && (
                               <SecondTable
                                 key={"second-table" + row.batchID}
@@ -252,11 +260,11 @@ const CryptoTnxHistory = () => {
                               />
                             )}
                           </DialogContent>
-                          <DialogActions>
+                          {/* <DialogActions>
                             <Button autoFocus onClick={handleClose}>
                               Return to Batch Table
                             </Button>
-                          </DialogActions>
+                          </DialogActions> */}
                         </BootstrapDialog>
                       </Stack>
                     </TableCell>
