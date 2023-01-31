@@ -44,6 +44,7 @@ const CryptoTnx = () => {
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = React.useState("");
+  const [submit, setSubmit] = useState(false);
   // functions declarations ------------
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
@@ -93,15 +94,52 @@ const CryptoTnx = () => {
   useEffect(() => {
     console.log(cryptoTnxData);
   }, [cryptoTnxData]);
+
+  useEffect(() => {
+    console.log("useEffect");
+    if (submit === true) {
+      if (allCryptoTnxData.length > 1) {
+        navigate("/approval", { state: allCryptoTnxData });
+      } else {
+        setMessage("Please Add at least one entry ");
+        setOpen(true);
+      }
+    }
+  }, [allCryptoTnxData, navigate, submit]);
   const handleSubmit = async () => {
-    await insertTransaction();
-    if (allCryptoTnxData.length > 1) {
-      navigate("/approval", { state: allCryptoTnxData });
+    if (
+      cryptoTnxData.user_address !== "" ||
+      cryptoTnxData.amount !== 0 ||
+      cryptoTnxData.crypto_coin !== "" ||
+      cryptoTnxData.foreignID !== "" ||
+      cryptoTnxData.flat_coin !== ""
+    ) {
+      if (
+        cryptoTnxData.user_address === "" ||
+        cryptoTnxData.amount === 0 ||
+        cryptoTnxData.crypto_coin === "" ||
+        cryptoTnxData.foreignID === "" ||
+        cryptoTnxData.flat_coin === ""
+      ) {
+        setMessage("Please add all the fields");
+        setOpen(true);
+      } else {
+        setOpen(false);
+        setAllCryptoTnxData([...allCryptoTnxData, cryptoTnxData]);
+        setCryptoTnxData({
+          user_address: "",
+          foreignID: "",
+          crypto_coin: "",
+          flat_coin: "",
+          amount: 0,
+        });
+        setSubmit(true);
+      }
     } else {
-      setMessage("Please Add at least one entry ");
-      setOpen(true);
+      setSubmit(true);
     }
   };
+
   const handleClose = (
     event: React.SyntheticEvent | Event,
     reason?: string
@@ -130,7 +168,24 @@ const CryptoTnx = () => {
     });
     promise.then((d: any) => {
       console.log(d, "excel");
-      setAllCryptoTnxData([...allCryptoTnxData, ...d]);
+      let excelCheck = true;
+      for (var i = 0; i < d.length; i++) {
+        if (
+          Object.keys(d[i]).length === 5 &&
+          d[i].hasOwnProperty("user_address") &&
+          d[i].hasOwnProperty("foreignID") &&
+          d[i].hasOwnProperty("crypto_coin") &&
+          d[i].hasOwnProperty("flat_coin") &&
+          d[i].hasOwnProperty("amount")
+        ) {
+          //do nothing
+        } else {
+          excelCheck = false;
+          break;
+        }
+      }
+      if (excelCheck) setAllCryptoTnxData((prev) => [...prev, ...d]);
+      else alert("incomplete data or format in excelo");
     });
   };
   const action = (
