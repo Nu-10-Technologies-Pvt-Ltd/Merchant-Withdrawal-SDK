@@ -1,7 +1,8 @@
-import React, { useState, ChangeEventHandler, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
+  Backdrop,
   Box,
-  Container,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -15,21 +16,24 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import { Stack } from "@mui/system";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import Snackbar from "@mui/material/Snackbar";
 import * as XLSX from "xlsx";
 import { useNavigate } from "react-router-dom";
 import ResponsiveAppBar from "../../components/appbar";
 import Footer from "../../components/footer";
+import SnackBar from "../../components/snackbar";
 const CryptoTnx = () => {
   // State declarations  -------------
+  const [openSnack, setOpenSnack] = React.useState(false);
+  const [loaderOpen, setLoaderOpen] = useState(false);
+  const [severity, setSeverity] = useState("success");
+  const [message, setMessage] = React.useState("");
+  const [submit, setSubmit] = useState(false);
   const [allCryptoTnxData, setAllCryptoTnxData] = useState([
     {
       user_address: "",
       foreignID: "",
       crypto_coin: "",
-      flat_coin: "",
+      fiat_coin: "",
       amount: 0,
     },
   ]);
@@ -37,21 +41,30 @@ const CryptoTnx = () => {
     user_address: "",
     foreignID: "",
     crypto_coin: "",
-    flat_coin: "",
+    fiat_coin: "",
     amount: 0,
   });
 
   const navigate = useNavigate();
-  const [open, setOpen] = React.useState(false);
-  const [message, setMessage] = React.useState("");
+
   // functions declarations ------------
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
-    if (name !== "amount") {
-      setCryptoTnxData({
-        ...cryptoTnxData,
-        [name]: value,
-      });
+
+    if (name === "user_address" || name === "foreignID") {
+      if (/^[a-zA-Z0-9]*$/i.test(value)) {
+        setCryptoTnxData({
+          ...cryptoTnxData,
+          [name]: value,
+        });
+      }
+    } else if (name === "crypto_coin" || name === "fiat_coin") {
+      if (/^[a-zA-Z]*$/i.test(value)) {
+        setCryptoTnxData({
+          ...cryptoTnxData,
+          [name]: value,
+        });
+      }
     } else {
       setCryptoTnxData({
         ...cryptoTnxData,
@@ -67,18 +80,19 @@ const CryptoTnx = () => {
       cryptoTnxData.amount === 0 ||
       cryptoTnxData.crypto_coin === "" ||
       cryptoTnxData.foreignID === "" ||
-      cryptoTnxData.flat_coin === ""
+      cryptoTnxData.fiat_coin === ""
     ) {
       setMessage("Please add all the fields");
-      setOpen(true);
+      setSeverity("error");
+      setOpenSnack(true);
     } else {
-      setOpen(false);
+      setOpenSnack(false);
       setAllCryptoTnxData([...allCryptoTnxData, cryptoTnxData]);
       setCryptoTnxData({
         user_address: "",
         foreignID: "",
         crypto_coin: "",
-        flat_coin: "",
+        fiat_coin: "",
         amount: 0,
       });
       console.log(allCryptoTnxData, "inside ");
@@ -93,26 +107,56 @@ const CryptoTnx = () => {
   useEffect(() => {
     console.log(cryptoTnxData);
   }, [cryptoTnxData]);
+
+  useEffect(() => {
+    console.log("useEffect");
+    if (submit === true) {
+      if (allCryptoTnxData.length > 1) {
+        navigate("/approval", { state: allCryptoTnxData });
+      } else {
+        setMessage("Please Add at least one entry ");
+        setSeverity("error");
+        setOpenSnack(true);
+      }
+    }
+  }, [allCryptoTnxData, navigate, submit]);
   const handleSubmit = async () => {
-    await insertTransaction();
-    if (allCryptoTnxData.length > 1) {
-      navigate("/approval", { state: allCryptoTnxData });
+    if (
+      cryptoTnxData.user_address !== "" ||
+      cryptoTnxData.amount !== 0 ||
+      cryptoTnxData.crypto_coin !== "" ||
+      cryptoTnxData.foreignID !== "" ||
+      cryptoTnxData.fiat_coin !== ""
+    ) {
+      if (
+        cryptoTnxData.user_address === "" ||
+        cryptoTnxData.amount === 0 ||
+        cryptoTnxData.crypto_coin === "" ||
+        cryptoTnxData.foreignID === "" ||
+        cryptoTnxData.fiat_coin === ""
+      ) {
+        setMessage("Please add all the fields");
+        setSeverity("error");
+        setOpenSnack(true);
+      } else {
+        setOpenSnack(false);
+        setAllCryptoTnxData([...allCryptoTnxData, cryptoTnxData]);
+        setCryptoTnxData({
+          user_address: "",
+          foreignID: "",
+          crypto_coin: "",
+          fiat_coin: "",
+          amount: 0,
+        });
+        setSubmit(true);
+      }
     } else {
-      setMessage("Please Add at least one entry ");
-      setOpen(true);
+      setSubmit(true);
     }
-  };
-  const handleClose = (
-    event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
   };
 
   const readExcel = (file: any) => {
+    setLoaderOpen(true);
     const promise = new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsArrayBuffer(file);
@@ -130,24 +174,46 @@ const CryptoTnx = () => {
     });
     promise.then((d: any) => {
       console.log(d, "excel");
-      setAllCryptoTnxData([...allCryptoTnxData, ...d]);
+      let excelCheck = true;
+      if (d.length === 0) {
+        excelCheck = false;
+      }
+      for (var i = 0; i < d.length; i++) {
+        if (
+          Object.keys(d[i]).length === 5 &&
+          d[i].hasOwnProperty("user_address") &&
+          d[i].hasOwnProperty("foreignID") &&
+          d[i].hasOwnProperty("crypto_coin") &&
+          d[i].hasOwnProperty("fiat_coin") &&
+          d[i].hasOwnProperty("amount")
+        ) {
+          if (
+            !/^[a-zA-Z0-9]+$/i.test(d[i].user_address) ||
+            !/^[a-zA-Z0-9]+$/i.test(d[i].foreignID) ||
+            !/^[a-zA-Z]+$/i.test(d[i].crypto_coin) ||
+            !/^[a-zA-Z]+$/i.test(d[i].fiat_coin) ||
+            !/^[0-9]+(\.[0-9]+)?$/i.test(d[i].amount)
+          ) {
+            excelCheck = false;
+            break;
+          }
+        } else {
+          excelCheck = false;
+          break;
+        }
+      }
+      if (excelCheck) {
+        setAllCryptoTnxData((prev) => [...prev, ...d]);
+        setLoaderOpen(false);
+      } else {
+        setMessage("incomplete data or format in excel");
+        setSeverity("error");
+        setOpenSnack(true);
+        setLoaderOpen(false);
+      }
     });
   };
-  const action = (
-    <React.Fragment>
-      <Button color="secondary" size="small" onClick={handleClose}>
-        UNDO
-      </Button>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </React.Fragment>
-  );
+
   return (
     <Box sx={{ backgroundColor: "#f9fafe" }}>
       <ResponsiveAppBar page="Crypto Transaction" />
@@ -156,13 +222,6 @@ const CryptoTnx = () => {
           direction={"column"}
           sx={{ alignItems: "center", minHeight: "70vh" }}
         >
-          <Snackbar
-            open={open}
-            autoHideDuration={6000}
-            onClose={handleClose}
-            message={message}
-            action={action}
-          />
           <Grid container>
             <Grid item xs={12} lg={12} mt={3}>
               <Button
@@ -277,7 +336,7 @@ const CryptoTnx = () => {
                               color: "#201B3F",
                             }}
                           >
-                            {item.flat_coin}
+                            {item.fiat_coin}
                           </TableCell>
                           <TableCell
                             align="justify"
@@ -352,9 +411,9 @@ const CryptoTnx = () => {
                           }}
                           size="small"
                           type="text"
-                          name="flat_coin"
+                          name="fiat_coin"
                           onChange={(e) => handleInputChange(e)}
-                          value={cryptoTnxData.flat_coin}
+                          value={cryptoTnxData.fiat_coin}
                           fullWidth
                           placeholder="Flat Coin"
                           variant="outlined"
@@ -431,7 +490,7 @@ const CryptoTnx = () => {
                   >
                     <a
                       style={{ color: "#fff" }}
-                      href="https://res.cloudinary.com/dlvgerrwj/raw/upload/v1674139804/dummy-transaction_feeviz.xlsx"
+                      href="https://res.cloudinary.com/diwqlosrk/raw/upload/v1675236890/dummy-transaction_feeviz_unelwu.xlsx"
                     >
                       Download Dummy Excel file
                     </a>
@@ -453,6 +512,19 @@ const CryptoTnx = () => {
             </Grid>
           </Grid>
         </Stack>
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loaderOpen}
+          onClick={() => {}}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+        <SnackBar
+          open={openSnack}
+          message={message}
+          setOpen={setOpenSnack}
+          severity={severity}
+        />
       </Box>
       <Footer />
     </Box>
