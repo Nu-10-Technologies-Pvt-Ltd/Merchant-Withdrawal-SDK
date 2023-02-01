@@ -416,7 +416,7 @@ const CryptoTnx = () => {
                           onChange={(e) => handleInputChange(e)}
                           value={cryptoTnxData.fiat_coin}
                           fullWidth
-                          placeholder="Flat Coin"
+                          placeholder="Fiat Coin"
                           variant="outlined"
                         />
                       </TableCell>
