@@ -208,7 +208,7 @@ function Approval() {
                           color: "#201B3F",
                         }}
                       >
-                        {row.flat_coin}
+                        {row.fiat_coin}
                       </TableCell>
                       <TableCell
                         align="justify"
