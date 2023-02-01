@@ -155,7 +155,7 @@ const CryptoTnx = () => {
     }
   };
 
-  const readExcel = (file: any) => {
+  const readExcel = (file: Blob) => {
     setLoaderOpen(true);
     const promise = new Promise((resolve, reject) => {
       const fileReader = new FileReader();
@@ -169,6 +169,7 @@ const CryptoTnx = () => {
         resolve(data);
       };
       fileReader.onerror = (error) => {
+        console.log(error, "file upload");
         reject(error);
       };
     });
@@ -504,9 +505,10 @@ const CryptoTnx = () => {
                 }}
                 id="excel"
                 onChange={(e) => {
-                  const { files } = e.target;
+                  let { files } = e.target;
                   const selectedFiles = files as FileList;
                   readExcel(selectedFiles?.[0]);
+                  e.target.value = "";
                 }}
               />
             </Grid>
