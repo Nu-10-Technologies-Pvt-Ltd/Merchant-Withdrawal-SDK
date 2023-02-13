@@ -36,7 +36,7 @@ function Approval() {
   //   setApprovedData({ transaction: allCryptoTnxData });
   // }, [allCryptoTnxData]);
   const [approvedData, setApprovedData] = useState({
-    transaction: [],
+    cryptoTnx: [],
   });
   const [approved, setApproved] = useState(
     Array(allCryptoTnxData.length).fill(false)
@@ -54,23 +54,30 @@ function Approval() {
     newArr[cryptoIndex] = true;
     setApproved(newArr);
     setApprovedData({
-      transaction: [...approvedData.transaction, allCryptoTnxData[cryptoIndex]],
+      cryptoTnx: [...approvedData.cryptoTnx, allCryptoTnxData[cryptoIndex]],
     });
   };
   const handleApproveAll = () => {
     setApproved(Array(allCryptoTnxData.length).fill(true));
-    setApprovedData({ transaction: [...allCryptoTnxData] });
+    setApprovedData({ cryptoTnx: [...allCryptoTnxData] });
     console.log(approved, "aa");
   };
   const handleSend = async (): Promise<any> => {
     console.log(approvedData);
-    if (approvedData.transaction.length === 0) {
+    if (approvedData.cryptoTnx.length === 0) {
       setErrorMessage("Please approve atleast one row");
       setSeverity("error");
       setOpenSnack(true);
       return;
     }
-    const Result = await sendCrypto(approvedData);
+    const Result = await sendCrypto({
+      ...approvedData,
+      batchTnx: {
+        merchant_id: "lorem",
+        merchant_name: "sushant gawai",
+        tenant_id: "lorem",
+      },
+    });
     console.log(Result.status);
     if (Result.status === "success") {
       navigate("/crypto-txn-history");
@@ -128,7 +135,7 @@ function Approval() {
               <TableRow>
                 {[
                   "User Address",
-                  "Foreign Id",
+                  "Username",
                   "Fiat Coin",
                   "Crypto Coin",
                   "Amount",
@@ -155,7 +162,7 @@ function Approval() {
               {allCryptoTnxData.length > 0
                 ? allCryptoTnxData.map((row: any, cryptoIndex) => (
                     <TableRow
-                      key={row.foreignID}
+                      key={row.user_name}
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                         background: "#FFFFFF",
@@ -186,7 +193,7 @@ function Approval() {
                           color: "#201B3F",
                         }}
                       >
-                        {row.foreignID}
+                        {row.user_name}
                       </TableCell>
                       <TableCell
                         align="justify"
@@ -208,7 +215,7 @@ function Approval() {
                           color: "#201B3F",
                         }}
                       >
-                        {row.fiat_coin}
+                        {row.fiat}
                       </TableCell>
                       <TableCell
                         align="justify"

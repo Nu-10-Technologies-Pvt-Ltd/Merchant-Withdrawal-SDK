@@ -31,17 +31,17 @@ const CryptoTnx = () => {
   const [allCryptoTnxData, setAllCryptoTnxData] = useState([
     {
       user_address: "",
-      foreignID: "",
+      user_name: "",
       crypto_coin: "",
-      fiat_coin: "",
+      fiat: "",
       amount: 0,
     },
   ]);
   const [cryptoTnxData, setCryptoTnxData] = useState({
     user_address: "",
-    foreignID: "",
+    user_name: "",
     crypto_coin: "",
-    fiat_coin: "",
+    fiat: "",
     amount: 0,
   });
 
@@ -51,14 +51,14 @@ const CryptoTnx = () => {
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
 
-    if (name === "user_address" || name === "foreignID") {
+    if (name === "user_address" || name === "user_name") {
       if (/^[a-zA-Z0-9]*$/i.test(value)) {
         setCryptoTnxData({
           ...cryptoTnxData,
           [name]: value,
         });
       }
-    } else if (name === "crypto_coin" || name === "fiat_coin") {
+    } else if (name === "crypto_coin" || name === "fiat") {
       if (/^[a-zA-Z]*$/i.test(value)) {
         setCryptoTnxData({
           ...cryptoTnxData,
@@ -79,8 +79,8 @@ const CryptoTnx = () => {
       cryptoTnxData.user_address === "" ||
       cryptoTnxData.amount === 0 ||
       cryptoTnxData.crypto_coin === "" ||
-      cryptoTnxData.foreignID === "" ||
-      cryptoTnxData.fiat_coin === ""
+      cryptoTnxData.user_name === "" ||
+      cryptoTnxData.fiat === ""
     ) {
       setMessage("Please add all the fields");
       setSeverity("error");
@@ -90,9 +90,9 @@ const CryptoTnx = () => {
       setAllCryptoTnxData([...allCryptoTnxData, cryptoTnxData]);
       setCryptoTnxData({
         user_address: "",
-        foreignID: "",
+        user_name: "",
         crypto_coin: "",
-        fiat_coin: "",
+        fiat: "",
         amount: 0,
       });
       console.log(allCryptoTnxData, "inside ");
@@ -125,15 +125,15 @@ const CryptoTnx = () => {
       cryptoTnxData.user_address !== "" ||
       cryptoTnxData.amount !== 0 ||
       cryptoTnxData.crypto_coin !== "" ||
-      cryptoTnxData.foreignID !== "" ||
-      cryptoTnxData.fiat_coin !== ""
+      cryptoTnxData.user_name !== "" ||
+      cryptoTnxData.fiat !== ""
     ) {
       if (
         cryptoTnxData.user_address === "" ||
         cryptoTnxData.amount === 0 ||
         cryptoTnxData.crypto_coin === "" ||
-        cryptoTnxData.foreignID === "" ||
-        cryptoTnxData.fiat_coin === ""
+        cryptoTnxData.user_name === "" ||
+        cryptoTnxData.fiat === ""
       ) {
         setMessage("Please add all the fields");
         setSeverity("error");
@@ -143,9 +143,9 @@ const CryptoTnx = () => {
         setAllCryptoTnxData([...allCryptoTnxData, cryptoTnxData]);
         setCryptoTnxData({
           user_address: "",
-          foreignID: "",
+          user_name: "",
           crypto_coin: "",
-          fiat_coin: "",
+          fiat: "",
           amount: 0,
         });
         setSubmit(true);
@@ -183,16 +183,16 @@ const CryptoTnx = () => {
         if (
           Object.keys(d[i]).length === 5 &&
           d[i].hasOwnProperty("user_address") &&
-          d[i].hasOwnProperty("foreignID") &&
+          d[i].hasOwnProperty("user_name") &&
           d[i].hasOwnProperty("crypto_coin") &&
-          d[i].hasOwnProperty("fiat_coin") &&
+          d[i].hasOwnProperty("fiat") &&
           d[i].hasOwnProperty("amount")
         ) {
           if (
             !/^[a-zA-Z0-9]+$/i.test(d[i].user_address) ||
-            !/^[a-zA-Z0-9]+$/i.test(d[i].foreignID) ||
+            !/^[a-zA-Z0-9]+$/i.test(d[i].user_name) ||
             !/^[a-zA-Z]+$/i.test(d[i].crypto_coin) ||
-            !/^[a-zA-Z]+$/i.test(d[i].fiat_coin) ||
+            !/^[a-zA-Z]+$/i.test(d[i].fiat) ||
             !/^[0-9]+(\.[0-9]+)?$/i.test(d[i].amount)
           ) {
             excelCheck = false;
@@ -257,9 +257,9 @@ const CryptoTnx = () => {
                     <TableRow>
                       {[
                         "User address",
-                        "Foreign ID",
-                        "Fiat Coin",
+                        "Username",
                         "Crypto Coin",
+                        "Fiat Coin",
                         "Amount",
                       ].map((item): any => (
                         <TableCell
@@ -285,7 +285,7 @@ const CryptoTnx = () => {
                     {allCryptoTnxData
                       .map((item) => (
                         <TableRow
-                          key={item.foreignID}
+                          key={item.user_name}
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
                             background: "#FFFFFF",
@@ -315,7 +315,7 @@ const CryptoTnx = () => {
                               color: "#201B3F",
                             }}
                           >
-                            {item.foreignID}
+                            {item.user_name}
                           </TableCell>
                           <TableCell
                             align="justify"
@@ -337,7 +337,7 @@ const CryptoTnx = () => {
                               color: "#201B3F",
                             }}
                           >
-                            {item.fiat_coin}
+                            {item.fiat}
                           </TableCell>
                           <TableCell
                             align="justify"
@@ -380,11 +380,11 @@ const CryptoTnx = () => {
                           }}
                           size="small"
                           type="text"
-                          name="foreignID"
+                          name="user_name"
                           onChange={(e) => handleInputChange(e)}
-                          value={cryptoTnxData.foreignID}
+                          value={cryptoTnxData.user_name}
                           fullWidth
-                          placeholder="Foreign ID"
+                          placeholder="Username"
                           variant="outlined"
                         />
                       </TableCell>
@@ -412,9 +412,9 @@ const CryptoTnx = () => {
                           }}
                           size="small"
                           type="text"
-                          name="fiat_coin"
+                          name="fiat"
                           onChange={(e) => handleInputChange(e)}
-                          value={cryptoTnxData.fiat_coin}
+                          value={cryptoTnxData.fiat}
                           fullWidth
                           placeholder="Fiat Coin"
                           variant="outlined"
@@ -491,7 +491,7 @@ const CryptoTnx = () => {
                   >
                     <a
                       style={{ color: "#fff" }}
-                      href="https://res.cloudinary.com/diwqlosrk/raw/upload/v1675236890/dummy-transaction_feeviz_unelwu.xlsx"
+                      href="https://res.cloudinary.com/diwqlosrk/raw/upload/v1676282104/dummy-transaction_tamcbb.xlsx"
                     >
                       Download Dummy Excel file
                     </a>

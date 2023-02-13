@@ -23,6 +23,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import Footer from "../../components/footer";
+import moment from "moment";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -64,16 +65,12 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
 }
 
 const CryptoTnxHistory = () => {
-  const [data, setData] = useState({
-    status: true,
-    message: "",
-    data: [],
-  });
+  const [data, setData] = useState({ status: "", message: "", data: [] });
   const getTxnHistoryData = async (): Promise<any> => {
     const Result = await getTxnHistory();
     if (Result.status === "success") {
       setData(Result.data);
-      console.log(data);
+      console.log(Result.data);
       // setLoadingBar(false);
       //   } else if (Result.status === "unauthorized") {
       //     toast.error(`Session Expired, You will be redireted to the Login page.`, {
@@ -97,8 +94,8 @@ const CryptoTnxHistory = () => {
   function MainTable() {
     const [open, setOpen] = React.useState("");
 
-    const handleClickOpen = (batchID: number) => {
-      setOpen("dialog" + batchID);
+    const handleClickOpen = (id: number) => {
+      setOpen("dialog" + id);
     };
     const handleClose = () => {
       setOpen("");
@@ -148,10 +145,10 @@ const CryptoTnxHistory = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data != null
+            {data.data.length > 0
               ? data.data.map((row: any, cryptoIndex) => (
                   <TableRow
-                    key={row.batchID}
+                    key={row.id}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                       background: "#FFFFFF",
@@ -170,7 +167,7 @@ const CryptoTnxHistory = () => {
                         color: "#201B3F",
                       }}
                     >
-                      {row.batchID}
+                      {row.id}
                     </TableCell>
                     <TableCell
                       align="justify"
@@ -181,7 +178,9 @@ const CryptoTnxHistory = () => {
                         color: "#201B3F",
                       }}
                     >
-                      {row.createdAt}
+                      {moment(row.createdAt).format(
+                        "dddd, MMMM Do YYYY, h:mm:ss a"
+                      )}
                     </TableCell>
                     <TableCell
                       align="justify"
@@ -192,7 +191,7 @@ const CryptoTnxHistory = () => {
                         color: "#201B3F",
                       }}
                     >
-                      {row.uuid}
+                      {/* {row.uuid} */}
                     </TableCell>
                     <TableCell
                       align="justify"
@@ -203,7 +202,7 @@ const CryptoTnxHistory = () => {
                         color: "#201B3F",
                       }}
                     >
-                      true
+                      {row.transaction[0].status}
                     </TableCell>
                     <TableCell
                       align="justify"
@@ -222,19 +221,19 @@ const CryptoTnxHistory = () => {
                     <TableCell align="justify">
                       <Stack spacing={1} direction={"row"}>
                         <Button
-                          key={"button" + row.batchID}
+                          key={"button" + row.id}
                           variant="contained"
                           color="primary"
                           style={{ color: "#FFF", backgroundColor: "#1E2959" }}
-                          onClick={() => handleClickOpen(row.batchID)}
+                          onClick={() => handleClickOpen(row.id)}
                         >
                           View Details
                         </Button>
                         <BootstrapDialog
-                          key={"dialog" + row.batchID}
+                          key={"dialog" + row.id}
                           onClose={handleClose}
                           aria-labelledby="customized-dialog-title"
-                          open={open === "dialog" + row.batchID}
+                          open={open === "dialog" + row.id}
                           fullWidth={true}
                           maxWidth={"lg"}
                           sx={{
@@ -255,8 +254,9 @@ const CryptoTnxHistory = () => {
                           >
                             {open && (
                               <SecondTable
-                                key={"second-table" + row.batchID}
+                                key={"second-table" + row.id}
                                 data={row.transaction}
+                                merchant_id={row.merchant_id}
                               />
                             )}
                           </DialogContent>
@@ -277,7 +277,7 @@ const CryptoTnxHistory = () => {
     );
   }
   function SecondTable(props: any) {
-    const { data } = props;
+    const { data, merchant_id } = props;
     console.log(data, "inside second table");
     return (
       <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
@@ -352,7 +352,7 @@ const CryptoTnxHistory = () => {
                         color: "#201B3F",
                       }}
                     >
-                      {row.foreignID}
+                      {merchant_id + " " + row.user_name + " " + row.fiat}
                     </TableCell>
                     <TableCell
                       align="justify"
@@ -374,7 +374,7 @@ const CryptoTnxHistory = () => {
                         color: "#201B3F",
                       }}
                     >
-                      {row.flat_coin}
+                      {row.fiat}
                     </TableCell>
                     <TableCell
                       align="justify"

@@ -1,10 +1,10 @@
 import { handleApiError, Result } from "../../utils";
 import apiClient from "../../api/http-common";
-import { TXN_HISTORY } from "../../api/endpoints";
+import { SUBMIT_DATA } from "../../api/endpoints";
 
 const sendCrypto = async (cryptoData: any): Promise<any> => {
   try {
-    const response = await apiClient.post(`${TXN_HISTORY}`, cryptoData);
+    const response = await apiClient.post(`${SUBMIT_DATA}`, cryptoData);
 
     const { data } = response;
     return Result.success(data);
