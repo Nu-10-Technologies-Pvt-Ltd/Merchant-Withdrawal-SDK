@@ -73,9 +73,9 @@ function Approval() {
     const Result = await sendCrypto({
       ...approvedData,
       batchTnx: {
-        merchant_id: "lorem",
+        merchant_id: "3e002d62-b978-425a-8649-670f70760fd0",
         merchant_name: "sushant gawai",
-        tenant_id: "lorem",
+        tenant_id: "3e002d62-b978-425a-8649-670f70760fd0",
       },
     });
     console.log(Result.status);
