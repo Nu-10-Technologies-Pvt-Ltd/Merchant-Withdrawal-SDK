@@ -215,7 +215,9 @@ const CryptoTnxHistory = () => {
                     >
                       {row.transaction
                         .map((item: any) => item.amount)
-                        .reduce((prev: any, next: any) => prev + next)}
+                        .reduce((prev: any, next: any) =>
+                          (parseFloat(prev) + parseFloat(next)).toFixed(8)
+                        )}
                     </TableCell>
 
                     <TableCell align="justify">
@@ -256,7 +258,7 @@ const CryptoTnxHistory = () => {
                               <SecondTable
                                 key={"second-table" + row.id}
                                 data={row.transaction}
-                                merchant_id={row.merchant_id}
+                                merchant_name={row.merchant_name}
                               />
                             )}
                           </DialogContent>
@@ -277,7 +279,7 @@ const CryptoTnxHistory = () => {
     );
   }
   function SecondTable(props: any) {
-    const { data, merchant_id } = props;
+    const { data, merchant_name } = props;
     console.log(data, "inside second table");
     return (
       <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
@@ -294,7 +296,8 @@ const CryptoTnxHistory = () => {
             <TableRow>
               {[
                 "User Address",
-                "Foreign Id",
+                "Merchant Name",
+                "Username",
                 "Crypto Coin",
                 "Fiat Coin",
                 "Amount",
@@ -352,7 +355,18 @@ const CryptoTnxHistory = () => {
                         color: "#201B3F",
                       }}
                     >
-                      {merchant_id + " " + row.user_name + " " + row.fiat}
+                      {merchant_name}
+                    </TableCell>
+                    <TableCell
+                      align="justify"
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "180.5%",
+                        color: "#201B3F",
+                      }}
+                    >
+                      {row.user_name}
                     </TableCell>
                     <TableCell
                       align="justify"
