@@ -130,7 +130,6 @@ const CryptoTnxHistory = () => {
                   key={item}
                   sx={{
                     fontWeight: "500",
-
                     lineHeight: "150%",
                     letterSpacing: "0.04em",
                     textTransform: "uppercase",
@@ -146,132 +145,138 @@ const CryptoTnxHistory = () => {
           </TableHead>
           <TableBody>
             {data.data.length > 0
-              ? data.data.map((row: any, cryptoIndex) => (
-                  <TableRow
-                    key={row.id}
-                    sx={{
-                      "&:last-child td, &:last-child th": { border: 0 },
-                      background: "#FFFFFF",
-                      boxShadow: "0px 4px 4px rgba(210, 207, 227, 0.25)",
-                      borderRadius: "7px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    <TableCell
-                      component="th"
-                      scope="row"
+              ? data.data
+                  .slice(0)
+                  .reverse()
+                  .map((row: any, cryptoIndex) => (
+                    <TableRow
+                      key={row.id}
                       sx={{
-                        fontWeight: "500",
-                        fontSize: "13px",
-                        lineHeight: "180.5%",
-                        color: "#201B3F",
+                        "&:last-child td, &:last-child th": { border: 0 },
+                        background: "#FFFFFF",
+                        boxShadow: "0px 4px 4px rgba(210, 207, 227, 0.25)",
+                        borderRadius: "7px",
+                        marginBottom: "10px",
                       }}
                     >
-                      {row.id}
-                    </TableCell>
-                    <TableCell
-                      align="justify"
-                      sx={{
-                        fontWeight: "500",
-                        fontSize: "13px",
-                        lineHeight: "180.5%",
-                        color: "#201B3F",
-                      }}
-                    >
-                      {moment(row.createdAt).format(
-                        "dddd, MMMM Do YYYY, h:mm:ss a"
-                      )}
-                    </TableCell>
-                    <TableCell
-                      align="justify"
-                      sx={{
-                        fontWeight: "500",
-                        fontSize: "13px",
-                        lineHeight: "180.5%",
-                        color: "#201B3F",
-                      }}
-                    >
-                      {/* {row.uuid} */}
-                    </TableCell>
-                    <TableCell
-                      align="justify"
-                      sx={{
-                        fontWeight: "500",
-                        fontSize: "13px",
-                        lineHeight: "180.5%",
-                        color: "#201B3F",
-                      }}
-                    >
-                      {row.transaction[0].status}
-                    </TableCell>
-                    <TableCell
-                      align="justify"
-                      sx={{
-                        fontWeight: "500",
-                        fontSize: "13px",
-                        lineHeight: "180.5%",
-                        color: "#201B3F",
-                      }}
-                    >
-                      {row.transaction
-                        .map((item: any) => item.amount)
-                        .reduce((prev: any, next: any) =>
-                          (parseFloat(prev) + parseFloat(next)).toFixed(8)
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{
+                          fontWeight: "500",
+                          fontSize: "13px",
+                          lineHeight: "180.5%",
+                          color: "#201B3F",
+                        }}
+                      >
+                        {row.id}
+                      </TableCell>
+                      <TableCell
+                        align="justify"
+                        sx={{
+                          fontWeight: "500",
+                          fontSize: "13px",
+                          lineHeight: "180.5%",
+                          color: "#201B3F",
+                        }}
+                      >
+                        {moment(row.createdAt).format(
+                          "dddd, MMMM Do YYYY, h:mm:ss a"
                         )}
-                    </TableCell>
+                      </TableCell>
+                      <TableCell
+                        align="justify"
+                        sx={{
+                          fontWeight: "500",
+                          fontSize: "13px",
+                          lineHeight: "180.5%",
+                          color: "#201B3F",
+                        }}
+                      >
+                        {/* {row.uuid} */}
+                      </TableCell>
+                      <TableCell
+                        align="justify"
+                        sx={{
+                          fontWeight: "500",
+                          fontSize: "13px",
+                          lineHeight: "180.5%",
+                          color: "#201B3F",
+                        }}
+                      >
+                        {row.transaction[0].status}
+                      </TableCell>
+                      <TableCell
+                        align="justify"
+                        sx={{
+                          fontWeight: "500",
+                          fontSize: "13px",
+                          lineHeight: "180.5%",
+                          color: "#201B3F",
+                        }}
+                      >
+                        {row.transaction
+                          .map((item: any) => item.amount)
+                          .reduce((prev: any, next: any) =>
+                            (parseFloat(prev) + parseFloat(next)).toFixed(8)
+                          )}
+                      </TableCell>
 
-                    <TableCell align="justify">
-                      <Stack spacing={1} direction={"row"}>
-                        <Button
-                          key={"button" + row.id}
-                          variant="contained"
-                          color="primary"
-                          style={{ color: "#FFF", backgroundColor: "#1E2959" }}
-                          onClick={() => handleClickOpen(row.id)}
-                        >
-                          View Details
-                        </Button>
-                        <BootstrapDialog
-                          key={"dialog" + row.id}
-                          onClose={handleClose}
-                          aria-labelledby="customized-dialog-title"
-                          open={open === "dialog" + row.id}
-                          fullWidth={true}
-                          maxWidth={"lg"}
-                          sx={{
-                            ".MuiPaper-root": {
-                              mx: 3,
-                            },
-                          }}
-                        >
-                          {/* <BootstrapDialogTitle
+                      <TableCell align="justify">
+                        <Stack spacing={1} direction={"row"}>
+                          <Button
+                            key={"button" + row.id}
+                            variant="contained"
+                            color="primary"
+                            style={{
+                              color: "#FFF",
+                              backgroundColor: "#1E2959",
+                            }}
+                            onClick={() => handleClickOpen(row.id)}
+                          >
+                            View Details
+                          </Button>
+                          <BootstrapDialog
+                            key={"dialog" + row.id}
+                            onClose={handleClose}
+                            aria-labelledby="customized-dialog-title"
+                            open={open === "dialog" + row.id}
+                            fullWidth={true}
+                            maxWidth={"lg"}
+                            sx={{
+                              ".MuiPaper-root": {
+                                mx: 3,
+                              },
+                            }}
+                          >
+                            {/* <BootstrapDialogTitle
                             id="customized-dialog-title"
                             onClose={handleClose}
                           >
                             Batch Details
                           </BootstrapDialogTitle> */}
-                          <DialogContent
-                            dividers
-                            sx={{ backgroundColor: "#f9fafe" }}
-                          >
-                            {open && (
-                              <SecondTable
-                                key={"second-table" + row.id}
-                                data={row.transaction}
-                                merchant_name={row.merchant_name}
-                              />
-                            )}
-                          </DialogContent>
-                          {/* <DialogActions>
+                            <DialogContent
+                              dividers
+                              sx={{ backgroundColor: "#f9fafe" }}
+                            >
+                              {open && (
+                                <SecondTable
+                                  key={"second-table" + row.id}
+                                  data={row.transaction}
+                                  merchant_name={row.merchant_name}
+                                />
+                              )}
+                            </DialogContent>
+                            {/* <DialogActions>
                             <Button autoFocus onClick={handleClose}>
                               Return to Batch Table
                             </Button>
                           </DialogActions> */}
-                        </BootstrapDialog>
-                      </Stack>
-                    </TableCell>
-                  </TableRow>
-                ))
+                          </BootstrapDialog>
+                        </Stack>
+                      </TableCell>
+                    </TableRow>
+                  ))
               : "No Data"}
           </TableBody>
         </Table>
