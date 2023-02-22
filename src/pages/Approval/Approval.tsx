@@ -46,8 +46,20 @@ function Approval() {
   console.log(stateContext);
   const token = stateContext.token;
   useEffect(() => {
-    setAllCryptoTnxData(state.slice(1));
+    if (state) setAllCryptoTnxData(state.slice(1));
   }, [state]);
+
+  useEffect(() => {
+    // Prompt confirmation when reload page is triggered
+    window.onbeforeunload = () => {
+      return "";
+    };
+
+    // Unmount the window.onbeforeunload event
+    return () => {
+      window.onbeforeunload = null;
+    };
+  }, []);
   // useEffect(() => {
   //   setApprovedData({ transaction: allCryptoTnxData });
   // }, [allCryptoTnxData]);
@@ -357,7 +369,9 @@ function Approval() {
                   variant="contained"
                   color="primary"
                   style={{ background: "#1E2959" }}
-                  onClick={() => navigate("/crypto-transaction")}
+                  onClick={() =>
+                    navigate("/crypto-transaction", { replace: true })
+                  }
                 >
                   Go to Homepage
                 </Button>
