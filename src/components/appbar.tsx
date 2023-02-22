@@ -14,9 +14,12 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import NutenLogo from "../assets/NutenLogo";
 import { Stack } from "@mui/material";
+import { useGlobalContext } from "../context/context";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+// const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar(props: any) {
   const { page } = props;
@@ -26,7 +29,7 @@ function ResponsiveAppBar(props: any) {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
-
+  const { dispatch } = useGlobalContext();
   // const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
   //   setAnchorElNav(event.currentTarget);
   // };
@@ -41,6 +44,14 @@ function ResponsiveAppBar(props: any) {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const navigate = useNavigate();
+  const { stateContext } = useGlobalContext();
+  console.log(stateContext);
+  const token = stateContext.token;
+
+  useEffect(() => {
+    if (token === "") navigate("/");
+  }, [navigate, stateContext, token]);
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "#FFF" }}>
@@ -158,11 +169,21 @@ function ResponsiveAppBar(props: any) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              {/* {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
-              ))}
+              ))} */}
+              <MenuItem onClick={handleCloseUserMenu}>
+                <Typography
+                  textAlign="center"
+                  onClick={() => {
+                    dispatch({ type: "LOGOUT", payload: { token: "" } });
+                  }}
+                >
+                  Logout
+                </Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

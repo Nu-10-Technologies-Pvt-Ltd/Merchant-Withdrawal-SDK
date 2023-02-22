@@ -24,6 +24,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import Footer from "../../components/footer";
 import moment from "moment";
+import { useGlobalContext } from "../../context/context";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -66,8 +67,11 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
 
 const CryptoTnxHistory = () => {
   const [data, setData] = useState({ status: "", message: "", data: [] });
+  const { stateContext } = useGlobalContext();
+  console.log(stateContext);
+  const token = stateContext.token;
   const getTxnHistoryData = async (): Promise<any> => {
-    const Result = await getTxnHistory();
+    const Result = await getTxnHistory(token);
     if (Result.status === "success") {
       setData(Result.data);
       console.log(Result.data);

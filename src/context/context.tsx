@@ -17,23 +17,23 @@ interface Props {
 }
 
 const AppContext = createContext<{
-  state: stateType;
+  stateContext: stateType;
   dispatch: React.Dispatch<actionType>;
-}>({ state: initialState, dispatch: () => undefined });
+}>({ stateContext: initialState, dispatch: () => undefined });
 
-const reducer = (state: stateType, action: actionType): stateType => {
+const reducer = (stateContext: stateType, action: actionType): stateType => {
   switch (action.type) {
     case "LOGIN":
       window.localStorage.setItem("token", action.payload.token);
       return {
-        ...state,
+        ...stateContext,
         token: action.payload.token,
       };
 
     case "LOGOUT":
       window.localStorage.removeItem("token");
       return {
-        ...state,
+        ...stateContext,
         token: "",
       };
 
@@ -43,10 +43,10 @@ const reducer = (state: stateType, action: actionType): stateType => {
 };
 
 const AppProvider: React.FC<Props> = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [stateContext, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <AppContext.Provider value={{ state, dispatch }}>
+    <AppContext.Provider value={{ stateContext, dispatch }}>
       {children}
     </AppContext.Provider>
   );
