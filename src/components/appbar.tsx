@@ -45,14 +45,6 @@ function ResponsiveAppBar(props: any) {
     setAnchorElUser(null);
   };
   const navigate = useNavigate();
-  const { stateContext } = useGlobalContext();
-  console.log(stateContext);
-  const token = stateContext.token;
-
-  useEffect(() => {
-    // if (token === "")
-    //   <Navigate to="/" replace state={{ path: "/crypto-transaction" }} />;
-  }, [navigate, stateContext, token]);
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "#FFF" }}>

@@ -6,7 +6,6 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Button,
   Stack,
   Box,
   Typography,
@@ -20,8 +19,21 @@ import sendCrypto from "./services";
 import SnackBar from "../../components/snackbar";
 import Footer from "../../components/footer";
 import { useGlobalContext } from "../../context/context";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 function Approval() {
+  const [open, setOpen] = React.useState(false);
+  const [dialogMessage, setDialogMessage] = useState("");
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const [openSnack, setOpenSnack] = React.useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [severity, setSeverity] = useState("error");
@@ -84,7 +96,8 @@ function Approval() {
     });
     console.log(Result.status);
     if (Result.status === "success") {
-      navigate("/crypto-txn-history");
+      setDialogMessage("Data uploaded successfully");
+      setOpen(true);
       // console.log(Result.data);
       // setLoadingBar(false);
       //   } else if (Result.status === "unauthorized") {
@@ -100,9 +113,8 @@ function Approval() {
       //     });
       //   }
     } else {
-      setErrorMessage(Result.errors);
-      setSeverity("error");
-      setOpenSnack(true);
+      setDialogMessage(Result.errors);
+      setOpen(true);
     }
   };
   return (
@@ -315,17 +327,44 @@ function Approval() {
             style={{ background: "#1E2959" }}
             onClick={handleApproveAll}
           >
-            Appove ALl
+            Approve All
           </Button>
 
-          <Button
-            variant="contained"
-            color="error"
-            style={{ color: "#FFF", borderColor: "#1E2959" }}
-            onClick={handleSend}
-          >
-            Send
-          </Button>
+          <div>
+            <Button
+              variant="contained"
+              color="error"
+              style={{ color: "#FFF", borderColor: "#1E2959" }}
+              onClick={handleSend}
+            >
+              Send
+            </Button>
+
+            <Dialog
+              open={open}
+              // onClose={}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{"Status"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {dialogMessage}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ background: "#1E2959" }}
+                  onClick={() => navigate("/crypto-transaction")}
+                >
+                  Go to Homepage
+                </Button>
+                {/* <Button onClick={handleClose}>Try Again</Button> */}
+              </DialogActions>
+            </Dialog>
+          </div>
         </Stack>
       </Box>
       <SnackBar
