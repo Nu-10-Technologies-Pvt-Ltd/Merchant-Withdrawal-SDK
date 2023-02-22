@@ -16,7 +16,7 @@ import NutenLogo from "../assets/NutenLogo";
 import { Stack } from "@mui/material";
 import { useGlobalContext } from "../context/context";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const pages = ["Products", "Pricing", "Blog"];
 // const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -50,7 +50,8 @@ function ResponsiveAppBar(props: any) {
   const token = stateContext.token;
 
   useEffect(() => {
-    if (token === "") navigate("/");
+    // if (token === "")
+    //   <Navigate to="/" replace state={{ path: "/crypto-transaction" }} />;
   }, [navigate, stateContext, token]);
 
   return (
@@ -179,6 +180,7 @@ function ResponsiveAppBar(props: any) {
                   textAlign="center"
                   onClick={() => {
                     dispatch({ type: "LOGOUT", payload: { token: "" } });
+                    navigate("/");
                   }}
                 >
                   Logout
