@@ -19,6 +19,7 @@ import ResponsiveAppBar from "../../components/appbar";
 import sendCrypto from "./services";
 import SnackBar from "../../components/snackbar";
 import Footer from "../../components/footer";
+import { useGlobalContext } from "../../context/context";
 
 function Approval() {
   const [openSnack, setOpenSnack] = React.useState(false);
@@ -29,6 +30,9 @@ function Approval() {
   const { state } = useLocation();
   // console.log(state, "state in approval");
   const [allCryptoTnxData, setAllCryptoTnxData] = useState([]);
+  const { stateContext } = useGlobalContext();
+  console.log(stateContext);
+  const token = stateContext.token;
   useEffect(() => {
     setAllCryptoTnxData(state.slice(1));
   }, [state]);
@@ -73,9 +77,9 @@ function Approval() {
     const Result = await sendCrypto({
       ...approvedData,
       batchTnx: {
-        merchant_id: "3e002d62-b978-425a-8649-670f70760fd0",
+        merchant_id: token,
         merchant_name: "sushant gawai",
-        tenant_id: "3e002d62-b978-425a-8649-670f70760fd0",
+        tenant_id: token,
       },
     });
     console.log(Result.status);
