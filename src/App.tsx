@@ -31,7 +31,22 @@ function App() {
           }
         />
         {/* <Route path="/twofa" element={<TwoFa />} /> */}
-        <Route path="/crypto-txn-history" element={<CryptoTnxHistory />} />
+        <Route
+          path="/crypto-txn-history"
+          element={
+            <RequireAuth>
+              <CryptoTnxHistory />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/*"
+          element={
+            <RequireAuth>
+              <Login />
+            </RequireAuth>
+          }
+        />
 
         {/* <Route path="/about" element={<About />} /> */}
       </Routes>

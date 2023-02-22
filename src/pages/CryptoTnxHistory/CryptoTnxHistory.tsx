@@ -72,6 +72,7 @@ const CryptoTnxHistory = () => {
   const token = stateContext.token;
   const getTxnHistoryData = async (): Promise<any> => {
     const Result = await getTxnHistory(token);
+    console.log(Result);
     if (Result.status === "success") {
       setData(Result.data);
       console.log(Result.data);
@@ -89,6 +90,7 @@ const CryptoTnxHistory = () => {
       //     });
       //   }
       // }
+    } else {
     }
   };
   useEffect(() => {
@@ -148,7 +150,7 @@ const CryptoTnxHistory = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.data.length > 0
+            {data?.data
               ? data.data
                   .slice(0)
                   .reverse()
@@ -208,7 +210,7 @@ const CryptoTnxHistory = () => {
                           color: "#201B3F",
                         }}
                       >
-                        {row.transaction[0].status}
+                        {/* {row.transaction[0].status} */} true
                       </TableCell>
                       <TableCell
                         align="justify"
@@ -219,11 +221,13 @@ const CryptoTnxHistory = () => {
                           color: "#201B3F",
                         }}
                       >
-                        {row.transaction
-                          .map((item: any) => item.amount)
-                          .reduce((prev: any, next: any) =>
-                            (parseFloat(prev) + parseFloat(next)).toFixed(8)
-                          )}
+                        {row.transaction.length > 0
+                          ? row.transaction
+                              .map((item: any) => item.amount)
+                              .reduce((prev: any, next: any) =>
+                                (parseFloat(prev) + parseFloat(next)).toFixed(8)
+                              )
+                          : 0}
                       </TableCell>
 
                       <TableCell align="justify">

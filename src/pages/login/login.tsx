@@ -279,7 +279,7 @@ const Login = (): JSX.Element => {
               mb: 2,
             }}
           >
-            LOGIN TO SUPER CASHIER DASHBOARD
+            LOGIN TO SUPER NIVAPAY-MERCHANTS
           </Typography>
 
           <form onSubmit={handleSubmit}>
