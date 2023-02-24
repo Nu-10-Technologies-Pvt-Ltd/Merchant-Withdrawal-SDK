@@ -52,7 +52,7 @@ function Approval() {
   useEffect(() => {
     // Prompt confirmation when reload page is triggered
     window.onbeforeunload = () => {
-      return "";
+      return navigate("/crypto-transaction");
     };
 
     // Unmount the window.onbeforeunload event
