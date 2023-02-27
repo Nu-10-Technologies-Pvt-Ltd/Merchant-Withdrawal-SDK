@@ -25,10 +25,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 
 function Approval() {
   const [open, setOpen] = React.useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
+  const [sendSuccess, setSendSuccess] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
@@ -109,6 +112,7 @@ function Approval() {
     console.log(Result.status);
     if (Result.status === "success") {
       setDialogMessage("Data uploaded successfully");
+      setSendSuccess(true);
       setOpen(true);
       // console.log(Result.data);
       // setLoadingBar(false);
@@ -126,6 +130,7 @@ function Approval() {
       //   }
     } else {
       setDialogMessage(Result.errors);
+      setSendSuccess(false);
       setOpen(true);
     }
   };
@@ -361,7 +366,14 @@ function Approval() {
               <DialogTitle id="alert-dialog-title">{"Status"}</DialogTitle>
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                  {dialogMessage}
+                  <Stack sx={{ display: "flex", alignItems: "center" }}>
+                    {sendSuccess ? (
+                      <CheckCircleRoundedIcon color="success" />
+                    ) : (
+                      <CancelRoundedIcon color="error" />
+                    )}
+                    {dialogMessage}
+                  </Stack>
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
@@ -373,7 +385,7 @@ function Approval() {
                     navigate("/crypto-transaction", { replace: true })
                   }
                 >
-                  Go to Homepage
+                  Homepage
                 </Button>
                 {/* <Button onClick={handleClose}>Try Again</Button> */}
               </DialogActions>

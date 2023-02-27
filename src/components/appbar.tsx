@@ -50,9 +50,9 @@ function ResponsiveAppBar(props: any) {
   const { stateContext } = useGlobalContext();
   let firstName = stateContext.firstName;
   console.log(firstName, "FIRST");
-  useEffect(() => {
-    alert(stateContext.firstName);
-  }, [stateContext]);
+  // useEffect(() => {
+  //   alert(stateContext.firstName);
+  // }, [stateContext]);
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "#FFF" }}>
