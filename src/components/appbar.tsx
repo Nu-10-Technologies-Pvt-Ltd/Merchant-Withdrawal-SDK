@@ -49,6 +49,8 @@ function ResponsiveAppBar(props: any) {
 
   const { stateContext } = useGlobalContext();
   let firstName = stateContext.firstName;
+  if (firstName === undefined) window.location.reload(); //doubt whether this is best practice or not
+
   console.log(firstName, "FIRST");
   // useEffect(() => {
   //   alert(stateContext.firstName);
