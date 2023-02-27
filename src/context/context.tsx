@@ -2,15 +2,17 @@ import React, { useReducer, useContext, createContext } from "react";
 
 interface stateType {
   token: string;
+  firstName: string;
 }
 
 interface actionType {
   payload: stateType;
-  type: "LOGIN" | "LOGOUT";
+  type: "LOGIN" | "LOGOUT" | "AVATAR";
 }
 
 const initialState: stateType = {
   token: window.localStorage.getItem("token") ?? "",
+  firstName: window.localStorage.getItem("firstName") ?? "",
 };
 interface Props {
   children: JSX.Element;
@@ -35,6 +37,13 @@ const reducer = (stateContext: stateType, action: actionType): stateType => {
       return {
         ...stateContext,
         token: "",
+      };
+
+    case "AVATAR":
+      window.localStorage.setItem("firstName", action.payload.firstName);
+      return {
+        ...stateContext,
+        firstName: action.payload.token,
       };
 
     default:

@@ -226,7 +226,10 @@ const Login = (): JSX.Element => {
       console.log(Result.data);
       var decoded: any = jwt_decode(Result.data.token);
       console.log(decoded);
-
+      await dispatch({
+        type: "AVATAR",
+        payload: { firstName: userName.toUpperCase() },
+      });
       await dispatch({ type: "LOGIN", payload: { token: decoded.public_key } });
 
       // setTimeout(() => {

@@ -17,6 +17,7 @@ import { Stack } from "@mui/material";
 import { useGlobalContext } from "../context/context";
 import { useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import BackgroundLetterAvatars from "./avatar";
 
 const pages = ["Products", "Pricing", "Blog"];
 // const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -45,6 +46,13 @@ function ResponsiveAppBar(props: any) {
     setAnchorElUser(null);
   };
   const navigate = useNavigate();
+
+  const { stateContext } = useGlobalContext();
+  let firstName = stateContext.firstName;
+  console.log(firstName, "FIRST");
+  useEffect(() => {
+    alert(stateContext.firstName);
+  }, [stateContext]);
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "#FFF" }}>
@@ -143,7 +151,7 @@ function ResponsiveAppBar(props: any) {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                {firstName && <BackgroundLetterAvatars name={firstName} />}
               </IconButton>
             </Tooltip>
             <Menu
