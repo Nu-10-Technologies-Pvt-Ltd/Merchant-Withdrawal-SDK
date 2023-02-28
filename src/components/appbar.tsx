@@ -15,7 +15,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import NutenLogo from "../assets/NutenLogo";
 import { Stack } from "@mui/material";
 import { useGlobalContext } from "../context/context";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import BackgroundLetterAvatars from "./avatar";
 
@@ -24,6 +24,7 @@ const pages = ["Products", "Pricing", "Blog"];
 
 function ResponsiveAppBar(props: any) {
   const { page } = props;
+  const [firstName, setFirstName] = useState<null | HTMLElement | string>(null);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -47,14 +48,14 @@ function ResponsiveAppBar(props: any) {
   };
   const navigate = useNavigate();
 
-  const { stateContext } = useGlobalContext();
-  let firstName = stateContext.firstName;
-  if (firstName === undefined) window.location.reload(); //doubt whether this is best practice or not
+  // const { stateContext } = useGlobalContext();
+  // let firstName = stateContext.firstName;
+  // if (firstName === undefined) window.location.reload();
 
-  console.log(firstName, "FIRST");
-  // useEffect(() => {
-  //   alert(stateContext.firstName);
-  // }, [stateContext]);
+  useEffect(() => {
+    setFirstName(localStorage.getItem("firstName"));
+    console.log(firstName, "FIRST");
+  }, [firstName]);
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "#FFF" }}>
