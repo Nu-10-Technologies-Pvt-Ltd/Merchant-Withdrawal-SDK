@@ -407,7 +407,8 @@ function Approval() {
                     </Typography>
                     <Typography>
                       Redirecting you to homepage in{" "}
-                      <span style={{ fontWeight: "bold" }}>{timeLeft}</span>
+                      <span style={{ fontWeight: "bold" }}>{timeLeft}</span>{" "}
+                      seconds
                     </Typography>
                     <Typography>
                       Please click below if you're not redirected automatically.
