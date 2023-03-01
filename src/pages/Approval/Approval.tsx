@@ -29,6 +29,32 @@ import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 
 function Approval() {
+  const [timeLeft, setTimeLeft] = useState<number>(-1);
+
+  useEffect(() => {
+    console.log(timeLeft);
+    if (timeLeft === -1) return;
+    if (timeLeft === 0) {
+      console.log("TIME LEFT IS 0");
+      // setTimeLeft(null);
+      navigate("/crypto-transaction", { replace: true });
+    }
+
+    // exit early when we reach 0
+    // if (timeLeft===-1) return;
+
+    // save intervalId to clear the interval when the
+    // component re-renders
+
+    const intervalId = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+
+    // clear interval on re-render to avoid memory leaks
+    return () => clearInterval(intervalId);
+    // add timeLeft as a dependency to re-rerun the effect
+    // when we update it
+  }, [timeLeft]);
   const [open, setOpen] = React.useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
   const [sendSuccess, setSendSuccess] = useState(false);
@@ -114,6 +140,7 @@ function Approval() {
       setDialogMessage("Data uploaded successfully");
       setSendSuccess(true);
       setOpen(true);
+      setTimeLeft(10);
       // console.log(Result.data);
       // setLoadingBar(false);
       //   } else if (Result.status === "unauthorized") {
@@ -132,6 +159,7 @@ function Approval() {
       setDialogMessage(Result.errors);
       setSendSuccess(false);
       setOpen(true);
+      setTimeLeft(10);
     }
   };
   return (
@@ -373,6 +401,17 @@ function Approval() {
                       <CancelRoundedIcon color="error" />
                     )}
                     {dialogMessage}
+                    <Typography sx={{ fontWeight: "bold" }}>
+                      {" "}
+                      {sendSuccess ? "" : "Please try again in sometime"}
+                    </Typography>
+                    <Typography>
+                      Redirecting you to homepage in{" "}
+                      <span style={{ fontWeight: "bold" }}>{timeLeft}</span>
+                    </Typography>
+                    <Typography>
+                      Please click below if you're not redirected automatically.
+                    </Typography>
                   </Stack>
                 </DialogContentText>
               </DialogContent>
