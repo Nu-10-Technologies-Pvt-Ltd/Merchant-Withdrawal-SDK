@@ -27,7 +27,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
-
+import { v4 as uuidv4 } from "uuid";
 function Approval() {
   const [timeLeft, setTimeLeft] = useState<number>(-1);
 
@@ -119,6 +119,7 @@ function Approval() {
     setApprovedData({ cryptoTnx: [...allCryptoTnxData] });
     console.log(approved, "aa");
   };
+  const myuuid = uuidv4();
   const handleSend = async (): Promise<any> => {
     console.log(approvedData);
     if (approvedData.cryptoTnx.length === 0) {
@@ -127,9 +128,11 @@ function Approval() {
       setOpenSnack(true);
       return;
     }
+
     const Result = await sendCrypto({
       ...approvedData,
-      batchTnx: {
+      batch_details: {
+        batch_id: myuuid,
         merchant_id: token,
         merchant_name: "sushant gawai",
         tenant_id: token,
@@ -243,7 +246,7 @@ function Approval() {
                           color: "#201B3F",
                         }}
                       >
-                        {row.user_address}
+                        {row.address}
                       </TableCell>
                       <TableCell
                         align="justify"
@@ -265,7 +268,7 @@ function Approval() {
                           color: "#201B3F",
                         }}
                       >
-                        {row.crypto_coin}
+                        {row.convert_to}
                       </TableCell>
                       <TableCell
                         align="justify"
@@ -276,7 +279,7 @@ function Approval() {
                           color: "#201B3F",
                         }}
                       >
-                        {row.fiat}
+                        {row.currency}
                       </TableCell>
                       <TableCell
                         align="justify"
