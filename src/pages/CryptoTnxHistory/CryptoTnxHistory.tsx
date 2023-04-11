@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   Paper,
   Stack,
@@ -66,17 +67,18 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
 }
 
 const CryptoTnxHistory = () => {
-  const [data, setData] = useState({ status: "", message: "", data: [] });
+  const [data, setData] = useState([]);
   const { stateContext } = useGlobalContext();
   console.log(stateContext);
   const token = stateContext.token;
+  const [loadingBar, setLoadingBar] = useState(true);
   const getTxnHistoryData = async (): Promise<any> => {
     const Result = await getTxnHistory(token);
     console.log(Result);
     if (Result.status === "success") {
       setData(Result.data);
       console.log(Result.data);
-      // setLoadingBar(false);
+      setLoadingBar(false);
       //   } else if (Result.status === "unauthorized") {
       //     toast.error(`Session Expired, You will be redireted to the Login page.`, {
       //       theme: "colored",
@@ -106,6 +108,13 @@ const CryptoTnxHistory = () => {
     const handleClose = () => {
       setOpen("");
     };
+
+    const styleTableCell = {
+      fontWeight: "500",
+      fontSize: "13px",
+      lineHeight: "180.5%",
+      color: "#201B3F",
+    };
     return (
       <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
         <Table
@@ -124,39 +133,36 @@ const CryptoTnxHistory = () => {
         >
           <TableHead>
             <TableRow>
-              {[
-                "Batch Id",
-                "Requested Time",
-                "Transaction Hash",
-                "Status",
-                "Amount",
-              ].map((item): any => (
-                <TableCell
-                  align="justify"
-                  key={item}
-                  sx={{
-                    fontWeight: "500",
-                    lineHeight: "150%",
-                    letterSpacing: "0.04em",
-                    textTransform: "uppercase",
-                    color: "#C4C4C4",
-                    borderBottom: "none",
-                    // backgroundColor: "#f9fafe",
-                  }}
-                >
-                  {item}
-                </TableCell>
-              ))}
+              {["Batch Id", "Requested Time", "Status", "Amount(Fiat)"].map(
+                (item): any => (
+                  <TableCell
+                    align="justify"
+                    key={item}
+                    sx={{
+                      fontWeight: "500",
+                      lineHeight: "150%",
+                      letterSpacing: "0.04em",
+                      textTransform: "uppercase",
+                      color: "#C4C4C4",
+                      borderBottom: "none",
+                      // backgroundColor: "#f9fafe",
+                    }}
+                  >
+                    {item}
+                  </TableCell>
+                )
+              )}
             </TableRow>
           </TableHead>
+
           <TableBody>
-            {data?.data
-              ? data.data
+            {data.length > 0
+              ? data
                   .slice(0)
                   .reverse()
                   .map((row: any, cryptoIndex) => (
                     <TableRow
-                      key={row.id}
+                      key={row.batch_details.id}
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                         background: "#FFFFFF",
@@ -165,65 +171,22 @@ const CryptoTnxHistory = () => {
                         marginBottom: "10px",
                       }}
                     >
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        sx={{
-                          fontWeight: "500",
-                          fontSize: "13px",
-                          lineHeight: "180.5%",
-                          color: "#201B3F",
-                        }}
-                      >
-                        {row.id}
+                      <TableCell component="th" scope="row" sx={styleTableCell}>
+                        {row.batch_details.id}
                       </TableCell>
-                      <TableCell
-                        align="justify"
-                        sx={{
-                          fontWeight: "500",
-                          fontSize: "13px",
-                          lineHeight: "180.5%",
-                          color: "#201B3F",
-                        }}
-                      >
-                        {moment(row.createdAt).format(
+                      <TableCell align="justify" sx={styleTableCell}>
+                        {moment(row.batch_details.createdAt).format(
                           "dddd, MMMM Do YYYY, h:mm:ss a"
                         )}
                       </TableCell>
-                      <TableCell
-                        align="justify"
-                        sx={{
-                          fontWeight: "500",
-                          fontSize: "13px",
-                          lineHeight: "180.5%",
-                          color: "#201B3F",
-                        }}
-                      >
-                        {/* {row.uuid} */}
-                      </TableCell>
-                      <TableCell
-                        align="justify"
-                        sx={{
-                          fontWeight: "500",
-                          fontSize: "13px",
-                          lineHeight: "180.5%",
-                          color: "#201B3F",
-                        }}
-                      >
+
+                      <TableCell align="justify" sx={styleTableCell}>
                         {/* {row.transaction[0].status} */} true
                       </TableCell>
-                      <TableCell
-                        align="justify"
-                        sx={{
-                          fontWeight: "500",
-                          fontSize: "13px",
-                          lineHeight: "180.5%",
-                          color: "#201B3F",
-                        }}
-                      >
+                      <TableCell align="justify" sx={styleTableCell}>
                         {row.transaction.length > 0
                           ? row.transaction
-                              .map((item: any) => item.amount)
+                              .map((item: any) => item.amountinusd)
                               .reduce((prev: any, next: any) =>
                                 (parseFloat(prev) + parseFloat(next)).toFixed(8)
                               )
@@ -233,22 +196,24 @@ const CryptoTnxHistory = () => {
                       <TableCell align="justify">
                         <Stack spacing={1} direction={"row"}>
                           <Button
-                            key={"button" + row.id}
+                            key={"button" + row.batch_details.id}
                             variant="contained"
                             color="primary"
                             style={{
                               color: "#FFF",
                               backgroundColor: "#1E2959",
                             }}
-                            onClick={() => handleClickOpen(row.id)}
+                            onClick={() =>
+                              handleClickOpen(row.batch_details.id)
+                            }
                           >
                             View Details
                           </Button>
                           <BootstrapDialog
-                            key={"dialog" + row.id}
+                            key={"dialog" + row.batch_details.id}
                             onClose={handleClose}
                             aria-labelledby="customized-dialog-title"
-                            open={open === "dialog" + row.id}
+                            open={open === "dialog" + row.batch_details.id}
                             fullWidth={true}
                             maxWidth={"lg"}
                             sx={{
@@ -269,9 +234,11 @@ const CryptoTnxHistory = () => {
                             >
                               {open && (
                                 <SecondTable
-                                  key={"second-table" + row.id}
+                                  key={"second-table" + row.batch_details.id}
                                   data={row.transaction}
-                                  merchant_name={row.merchant_name}
+                                  merchant_name={
+                                    row.batch_details.merchant_name
+                                  }
                                 />
                               )}
                             </DialogContent>
@@ -294,6 +261,12 @@ const CryptoTnxHistory = () => {
   function SecondTable(props: any) {
     const { data, merchant_name } = props;
     console.log(data, "inside second table");
+    const styleTableCell = {
+      fontWeight: "500",
+      fontSize: "13px",
+      lineHeight: "180.5%",
+      color: "#201B3F",
+    };
     return (
       <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
         <Table
@@ -311,6 +284,8 @@ const CryptoTnxHistory = () => {
                 "User Address",
                 "Merchant Name",
                 "Username",
+                "Transaction Hash",
+                "Status",
                 "Crypto Coin",
                 "Fiat Coin",
                 "Amount",
@@ -347,82 +322,31 @@ const CryptoTnxHistory = () => {
                       marginBottom: "10px",
                     }}
                   >
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      sx={{
-                        fontWeight: "500",
-                        fontSize: "13px",
-                        lineHeight: "180.5%",
-                        color: "#201B3F",
-                      }}
-                    >
-                      {row.user_address}
+                    <TableCell component="th" scope="row" sx={styleTableCell}>
+                      {row.address}
                     </TableCell>
-                    <TableCell
-                      align="justify"
-                      sx={{
-                        fontWeight: "500",
-                        fontSize: "13px",
-                        lineHeight: "180.5%",
-                        color: "#201B3F",
-                      }}
-                    >
+                    <TableCell align="justify" sx={styleTableCell}>
                       {merchant_name}
                     </TableCell>
-                    <TableCell
-                      align="justify"
-                      sx={{
-                        fontWeight: "500",
-                        fontSize: "13px",
-                        lineHeight: "180.5%",
-                        color: "#201B3F",
-                      }}
-                    >
-                      {row.user_name}
+                    <TableCell align="justify" sx={styleTableCell}>
+                      {row.username}
                     </TableCell>
-                    <TableCell
-                      align="justify"
-                      sx={{
-                        fontWeight: "500",
-                        fontSize: "13px",
-                        lineHeight: "180.5%",
-                        color: "#201B3F",
-                      }}
-                    >
-                      {row.crypto_coin}
+                    <TableCell align="justify" sx={styleTableCell}>
+                      {row.incomingtransactionhash}
                     </TableCell>
-                    <TableCell
-                      align="justify"
-                      sx={{
-                        fontWeight: "500",
-                        fontSize: "13px",
-                        lineHeight: "180.5%",
-                        color: "#201B3F",
-                      }}
-                    >
+                    <TableCell align="justify" sx={styleTableCell}>
+                      {row.status}
+                    </TableCell>
+                    <TableCell align="justify" sx={styleTableCell}>
+                      {row.currency}
+                    </TableCell>
+                    <TableCell align="justify" sx={styleTableCell}>
                       {row.fiat}
                     </TableCell>
-                    <TableCell
-                      align="justify"
-                      sx={{
-                        fontWeight: "500",
-                        fontSize: "13px",
-                        lineHeight: "180.5%",
-                        color: "#201B3F",
-                      }}
-                    >
-                      {row.amount}
+                    <TableCell align="justify" sx={styleTableCell}>
+                      {row.amountinusd}
                     </TableCell>
-                    <TableCell
-                      align="justify"
-                      sx={{
-                        fontWeight: "500",
-                        fontSize: "13px",
-                        lineHeight: "180.5%",
-                        color: "#201B3F",
-                      }}
-                    ></TableCell>
+                    <TableCell align="justify" sx={styleTableCell}></TableCell>
                   </TableRow>
                 ))
               : "No Data"}

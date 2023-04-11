@@ -93,7 +93,7 @@ function Approval() {
   //   setApprovedData({ transaction: allCryptoTnxData });
   // }, [allCryptoTnxData]);
   const [approvedData, setApprovedData] = useState({
-    cryptoTnx: [],
+    transactions: [],
   });
   const [approved, setApproved] = useState(
     Array(allCryptoTnxData.length).fill(false)
@@ -111,18 +111,21 @@ function Approval() {
     newArr[cryptoIndex] = true;
     setApproved(newArr);
     setApprovedData({
-      cryptoTnx: [...approvedData.cryptoTnx, allCryptoTnxData[cryptoIndex]],
+      transactions: [
+        ...approvedData.transactions,
+        allCryptoTnxData[cryptoIndex],
+      ],
     });
   };
   const handleApproveAll = () => {
     setApproved(Array(allCryptoTnxData.length).fill(true));
-    setApprovedData({ cryptoTnx: [...allCryptoTnxData] });
+    setApprovedData({ transactions: [...allCryptoTnxData] });
     console.log(approved, "aa");
   };
   const myuuid = uuidv4();
   const handleSend = async (): Promise<any> => {
     console.log(approvedData);
-    if (approvedData.cryptoTnx.length === 0) {
+    if (approvedData.transactions.length === 0) {
       setErrorMessage("Please approve atleast one row");
       setSeverity("error");
       setOpenSnack(true);
@@ -202,7 +205,7 @@ function Approval() {
                   "Username",
                   "Fiat Coin",
                   "Crypto Coin",
-                  "Amount",
+                  "Amount(Fiat)",
                 ].map((item): any => (
                   <TableCell
                     align="justify"
@@ -226,7 +229,7 @@ function Approval() {
               {allCryptoTnxData.length > 0
                 ? allCryptoTnxData.map((row: any, cryptoIndex) => (
                     <TableRow
-                      key={row.user_name}
+                      key={row.username}
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                         background: "#FFFFFF",
@@ -257,7 +260,7 @@ function Approval() {
                           color: "#201B3F",
                         }}
                       >
-                        {row.user_name}
+                        {row.username}
                       </TableCell>
                       <TableCell
                         align="justify"
@@ -268,7 +271,7 @@ function Approval() {
                           color: "#201B3F",
                         }}
                       >
-                        {row.convert_to}
+                        {row.currency}
                       </TableCell>
                       <TableCell
                         align="justify"
