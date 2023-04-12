@@ -62,13 +62,20 @@ function ResponsiveAppBar(props: any) {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
-          <Stack spacing={1} direction="row">
+          <Stack
+            spacing={1}
+            direction="row"
+            onClick={() => {
+              navigate("/crypto-transaction");
+            }}
+            sx={{ cursor: "pointer" }}
+          >
             <NutenLogo />
             <Typography
               // variant="h6"
               noWrap
               component="a"
-              href="/crypto-transaction"
+              // href="/crypto-transaction"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },

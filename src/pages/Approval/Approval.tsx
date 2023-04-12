@@ -282,7 +282,7 @@ function Approval() {
                           color: "#201B3F",
                         }}
                       >
-                        {row.currency}
+                        {row.convert_to}
                       </TableCell>
                       <TableCell
                         align="justify"

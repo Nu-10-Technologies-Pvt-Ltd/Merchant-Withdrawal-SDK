@@ -133,7 +133,7 @@ const CryptoTnxHistory = () => {
         >
           <TableHead>
             <TableRow>
-              {["Batch Id", "Requested Time", "Status", "Amount(Fiat)"].map(
+              {["Batch Id", "Requested Time", "Amount(Fiat)"].map(
                 (item): any => (
                   <TableCell
                     align="justify"
@@ -180,9 +180,6 @@ const CryptoTnxHistory = () => {
                         )}
                       </TableCell>
 
-                      <TableCell align="justify" sx={styleTableCell}>
-                        {/* {row.transaction[0].status} */} true
-                      </TableCell>
                       <TableCell align="justify" sx={styleTableCell}>
                         {row.transaction.length > 0
                           ? row.transaction
@@ -288,7 +285,8 @@ const CryptoTnxHistory = () => {
                 "Status",
                 "Crypto Coin",
                 "Fiat Coin",
-                "Amount",
+                "Fiat Amount",
+                "Crypto Amount",
               ].map((item): any => (
                 <TableCell
                   align="justify"
@@ -344,9 +342,12 @@ const CryptoTnxHistory = () => {
                       {row.fiat}
                     </TableCell>
                     <TableCell align="justify" sx={styleTableCell}>
-                      {row.amountinusd}
+                      {row.amountinusd.toFixed(2)}
                     </TableCell>
-                    <TableCell align="justify" sx={styleTableCell}></TableCell>
+                    <TableCell align="justify" sx={styleTableCell}>
+                      {" "}
+                      {row.amount.toFixed(8)}
+                    </TableCell>
                   </TableRow>
                 ))
               : "No Data"}
