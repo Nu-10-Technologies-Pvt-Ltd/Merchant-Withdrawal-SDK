@@ -195,14 +195,14 @@ const CryptoTnx = () => {
         if (
           Object.keys(d[i]).length === 5 &&
           d[i].hasOwnProperty("address") &&
-          d[i].hasOwnProperty("user_name") &&
+          d[i].hasOwnProperty("username") &&
           d[i].hasOwnProperty("convert_to") &&
           d[i].hasOwnProperty("currency") &&
           d[i].hasOwnProperty("amount")
         ) {
           if (
             !/^[a-zA-Z0-9]+$/i.test(d[i].address) ||
-            !/^[a-zA-Z0-9]+$/i.test(d[i].user_name) ||
+            !/^[a-zA-Z0-9]+$/i.test(d[i].username) ||
             !/^[a-zA-Z]+$/i.test(d[i].convert_to) ||
             !/^[a-zA-Z]+$/i.test(d[i].currency) ||
             !/^[0-9]+(\.[0-9]+)?$/i.test(d[i].amount)
